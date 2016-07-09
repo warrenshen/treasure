@@ -39,7 +39,7 @@ class CreateNoteModal extends Component {
             <TouchableHighlight
               onPress={this.props.onCancel}
               style={styles.button}>
-              <Text>Cancel</Text>
+              <Text style={styles.actionText}>Cancel</Text>
             </TouchableHighlight>
           </View>
           <Text style={styles.title}>
@@ -49,7 +49,7 @@ class CreateNoteModal extends Component {
             <TouchableHighlight
               onPress={this.props.onPost}
               style={styles.button}>
-              <Text>Post</Text>
+              <Text style={styles.actionText}>Post</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -76,28 +76,31 @@ class CreateNoteModal extends Component {
   const styles = StyleSheet.create({
 
   button: {
-    backgroundColor: '#eeeeee',
     padding: 10,
     marginRight: 5,
     marginLeft: 5,
   },
   header: {
+    paddingRight: 10, // Hacky dunno if centered either lol
+    paddingTop: 30,
+    backgroundColor: '#FF765F',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  actions: {
-
+  actionText: {
+    color: 'white',
+  },
+  title: {
+    color: 'white',
+    fontSize: 25,
   },
   textInputContainer: {
     flex: 1,
     flexDirection: 'column',
-    borderBottomColor: '#000000',
-    borderBottomWidth: 1,
   },
   textInput: {
     flex: 1,
-    height: 100,
-    borderColor: 'gray',
-    borderWidth: 4,
   },
 });
 
