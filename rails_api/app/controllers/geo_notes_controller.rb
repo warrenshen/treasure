@@ -1,4 +1,8 @@
 class GeoNotesController < ApplicationController
+  def index
+    render json: GeoNote.all
+  end
+
   def show
     render json: GeoNote.find(params.require(:id))
   end

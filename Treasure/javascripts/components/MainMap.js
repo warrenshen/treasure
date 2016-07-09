@@ -6,6 +6,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import Requester from '../helpers/requester';
+
 import MapView from 'react-native-maps';
 
 class MainMap extends Component {
@@ -15,13 +17,20 @@ class MainMap extends Component {
     this.state = {
       latitude: 37.78825,
       longitude: -122.4324,
+      markers: [],
     };
+    this.watchID = null;
   }
 
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
   componentDidMount() {
+    Requester.get(
+      'http://localhost:3000/geo_notes',
+      {},
+      (geoNotes) => this.setState({ markers: geoNotes })
+    );
     navigator.geolocation.getCurrentPosition(
       (response) => {
         const coords = response.coords;
@@ -33,7 +42,7 @@ class MainMap extends Component {
       (error) => alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-    navigator.geolocation.watchPosition(
+    this.watchID = navigator.geolocation.watchPosition(
       (response) => {
         const coords = response.coords;
         this.setState({
@@ -42,6 +51,10 @@ class MainMap extends Component {
         });
       }
     );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {
@@ -65,14 +78,14 @@ class MainMap extends Component {
         showsUserLocation={true}
         style={styles.map}
       >
-      {[1].map(marker => (
+      {this.state.markers.map(marker => (
         <MapView.Marker
           coordinate={{
-            latitude: 37.484556,
-            longitude: -122.147845,
+            latitude: parseFloat(marker.latitude),
+            longitude: parseFloat(marker.longitude),
           }}
           description={'Description'}
-          key={marker}
+          key={marker.id}
           title={'Test'}
         />
       ))}

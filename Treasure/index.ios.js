@@ -11,9 +11,8 @@ import {
   Modal,
 } from 'react-native';
 
-import MapView from 'react-native-maps';
-import CreateNoteModal from './components/CreateNoteModal';
-import MainMap from './components/MainMap';
+import CreateNoteModal from './javascripts/components/CreateNoteModal';
+import MainMap from './javascripts/components/MainMap';
 
 class Treasure extends Component {
 
@@ -29,10 +28,10 @@ class Treasure extends Component {
       createNoteModalIsVisible: false,
     };
   }
+
   // --------------------------------------------------
   // Event Handlers
   // --------------------------------------------------
-
   _handleShowCreateNoteModal() {
       this.setState({createNoteModalIsVisible: true});
   }
@@ -47,7 +46,6 @@ class Treasure extends Component {
 
   render() {
     const {createNoteModalIsVisible} = this.state;
-
     return (
       <View style={styles.container}>
         <MainMap />

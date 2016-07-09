@@ -1,7 +1,9 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+(1..5).each do
+  new_geo_note = GeoNote.create(
+    latitude: FFaker::Geolocation.lat,
+    longitude: FFaker::Geolocation.lng,
+    phone_id: FFaker::PhoneNumber.imei,
+    note_text: FFaker::Lorem.phrases,
+  )
+  puts "Created geo note with id #{new_geo_note.id}."
+end

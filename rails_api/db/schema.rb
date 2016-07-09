@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160709191747) do
     t.decimal  "longitude"
     t.string   "phone_id"
     t.integer  "upvotes"
-    t.integer  "downvote"
+    t.integer  "downvotes"
     t.string   "note_text"
     t.string   "note_image_file_name"
     t.string   "note_image_content_type"
