@@ -16,6 +16,7 @@ class MainMap extends Component {
       latitude: 37.78825,
       longitude: -122.4324,
     };
+    this.watchID = null;
   }
 
   // --------------------------------------------------
@@ -33,7 +34,7 @@ class MainMap extends Component {
       (error) => alert(error.message),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
-    navigator.geolocation.watchPosition(
+    this.watchID = navigator.geolocation.watchPosition(
       (response) => {
         const coords = response.coords;
         this.setState({
@@ -42,6 +43,10 @@ class MainMap extends Component {
         });
       }
     );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   render() {

@@ -47,7 +47,6 @@ class Treasure extends Component {
 
   render() {
     const {createNoteModalIsVisible} = this.state;
-
     return (
       <View style={styles.container}>
         <MainMap />
