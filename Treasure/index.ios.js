@@ -24,6 +24,8 @@ class Treasure extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      latitude: 37.78825,
+      longitude: -122.4324,
       noteCreationModalIsVisible: false,
     };
   }
@@ -46,12 +48,63 @@ class Treasure extends Component {
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
-
-  // TODO(shimmy): Consider making a component for the modal so we can use it for viewing posts too.
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      (response) => {
+        const coords = response.coords;
+        this.setState({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        });
+      },
+      (error) => alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+    navigator.geolocation.watchPosition(
+      (response) => {
+        const coords = response.coords;
+        this.setState({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        });
+      }
+    );
+  }
 
   render() {
+    const {
+      latitude,
+      longitude,
+    } = this.state;
     return (
       <View style={styles.container}>
+        <MapView
+          followsUserLocation={true}
+          loadingEnabled={true}
+          mapType={'standard'}
+          region={{
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          showsBuildings={false}
+          showsTraffic={false}
+          showsUserLocation={true}
+          style={styles.map}
+        >
+        {[1].map(marker => (
+          <MapView.Marker
+            coordinate={{
+              latitude: 37.484556,
+              longitude: -122.147845,
+            }}
+            description={'Description'}
+            key={marker}
+            title={'Test'}
+          />
+        ))}
+        </MapView>
         <Modal
           animationType={"slide"}
           transparent={false}
@@ -85,17 +138,7 @@ class Treasure extends Component {
             style={styles.button}>
           <Text>Send</Text>
         </TouchableHighlight>
-        <MapView
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          style={styles.map}
-        />
       </View>
-
     );
   }
 }
