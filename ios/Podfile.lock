@@ -1,0 +1,16 @@
+PODS:
+  - react-native-maps (0.6.0)
+
+DEPENDENCIES:
+  - react-native-maps (from `../node_modules/react-native-maps`)
+
+EXTERNAL SOURCES:
+  react-native-maps:
+    :path: "../node_modules/react-native-maps"
+
+SPEC CHECKSUMS:
+  react-native-maps: d252e4a61d56a33ea965312857d1e6d73b9e34d9
+
+PODFILE CHECKSUM: b4f0fc013abd7e89c3bac8ec22ced1b9664ac068
+
+COCOAPODS: 1.0.1
