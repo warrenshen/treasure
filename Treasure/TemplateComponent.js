@@ -35,4 +35,4 @@ class TemplateComponent extends Component {
   const styles = StyleSheet.create({
   });
 
-  AppRegistry.registerComponent('TemplateComponent', () => Treasure);
+export default TemplateComponent;
