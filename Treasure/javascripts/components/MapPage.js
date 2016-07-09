@@ -23,11 +23,18 @@ class MapPage extends Component {
     };
   }
 
-  _handleShowModal() {
+  _handleShowModal = () => {
     this.setState({ modalIsVisible: true });
   }
 
-  _handleHideModal() {
+  _handlePostNote = () => {
+    this.setState({
+      isPostingNote: false,
+      modalIsVisible: false
+    });
+  }
+
+  _handleHideModal = () => {
     this.setState({ modalIsVisible: false });
   }
 
@@ -35,8 +42,9 @@ class MapPage extends Component {
     const { isPostingNote } = this.state;
     if (isPostingNote) {
       this.setState({ modalIsVisible: true });
+    } else {
+      this.setState({ isPostingNote: !isPostingNote });
     }
-    this.setState({ isPostingNote: !isPostingNote });
   }
 
   _updatePostCoord = (postCoord) => {
@@ -76,8 +84,8 @@ class MapPage extends Component {
             />
             <CreateNoteModal
               isVisible={this.state.modalIsVisible}
-              onCancel={() => this._handleHideModal()}
-              onPost={() => this._handlePostNote()}
+              onCancel={this._handleHideModal}
+              onPost={this._handlePostNote}
             />
             <TouchableHighlight
               onPress={this._postNoteHandler}
