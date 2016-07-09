@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160709183506) do
+ActiveRecord::Schema.define(version: 20160709185005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,14 @@ ActiveRecord::Schema.define(version: 20160709183506) do
   create_table "geo_notes", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal  "latitude"
+    t.decimal  "longitude"
+    t.string   "phone_id"
+    t.integer  "upvotes"
+    t.integer  "downvote"
+    t.string   "note_text"
+    t.index ["latitude", "longitude"], name: "index_geo_notes_on_latitude_and_longitude", using: :btree
+    t.index ["phone_id"], name: "index_geo_notes_on_phone_id", using: :btree
   end
 
 end

@@ -1,0 +1,21 @@
+LineLength:
+  Max: 100
+
+Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/MethodLength:
+  Max: 20
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/migrate/*
+    - Gemfile
+    - bin/*
