@@ -37,12 +37,20 @@ class Treasure extends Component {
       this.setState({noteCreationModalIsVisible: false});
   }
 
+  _handlePostNote() {
+    // TODO(shimmy):
+  }
+
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
+
+  // TODO(shimmy): Consider making a component for the modal so we can use it for viewing posts too.
+
   render() {
     return (
       <View style={styles.container}>
+
         <Modal
           animationType={"slide"}
           transparent={false}
@@ -50,17 +58,25 @@ class Treasure extends Component {
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
          <View style={{marginTop: 22}}>
-          <View>
+          <View style={styles.actions}>
+            <TouchableHighlight
+              onPress={() => {
+                this._handlePostNote()
+              }}
+              style={styles.button}>
+              <Text>Post</Text>
+            </TouchableHighlight>
             <TouchableHighlight
               onPress={() => {
                 this._handleHideNoteCreationModal()
               }}
               style={styles.button}>
-              <Text>Hide Modal</Text>
+              <Text>Cancel</Text>
             </TouchableHighlight>
           </View>
          </View>
         </Modal>
+
         <TouchableHighlight
             onPress={() => {
               this._handleShowNoteCreationModal()
@@ -68,6 +84,7 @@ class Treasure extends Component {
             style={styles.button}>
           <Text>Send</Text>
         </TouchableHighlight>
+
       </View>
 
     );
@@ -102,6 +119,11 @@ class Treasure extends Component {
       padding: 10,
       marginRight: 5,
       marginLeft: 5,
+    },
+
+    actions: {
+      flex: 1,
+      flexDirection: 'row',
     },
   });
 
