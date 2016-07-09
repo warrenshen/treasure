@@ -9,6 +9,6 @@ class GeoNotesController < ApplicationController
 
   def in_bounds
     params = params.require(sw: [:latitude, :longitude], ne: [:latitude, :longitude])
-    GeoNote.in_bounds([params.sw, params.ne]).all
+    GeoNote.in_bounds([params[:sw], params[:ne]]).all
   end
 end
