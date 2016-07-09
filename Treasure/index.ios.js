@@ -1,18 +1,24 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
+// Libraries
 import React, { Component } from 'react';
+
+// UI
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableHighlight,
 } from 'react-native';
 
 class Treasure extends Component {
+
+  // --------------------------------------------------
+  // Props
+  // --------------------------------------------------
+
+  // --------------------------------------------------
+  // Render
+  // --------------------------------------------------
   render() {
     return (
       <View style={styles.container}>
@@ -26,28 +32,44 @@ class Treasure extends Component {
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+        <TouchableHighlight onPress={this._onPressButtonGET} style={styles.button}>
+          <Text>GET</Text>
+        </TouchableHighlight>
       </View>
+
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+  // --------------------------------------------------
+  // Styles
+  // --------------------------------------------------
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#F5FCFF',
+    },
 
-AppRegistry.registerComponent('Treasure', () => Treasure);
+    welcome: {
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10,
+    },
+
+    instructions: {
+      textAlign: 'center',
+      color: '#333333',
+      marginBottom: 5,
+    },
+
+    button: {
+      backgroundColor: '#eeeeee',
+      padding: 10,
+      marginRight: 5,
+      marginLeft: 5,
+    },
+  });
+
+  AppRegistry.registerComponent('Treasure', () => Treasure);
