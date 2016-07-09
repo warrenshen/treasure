@@ -56,6 +56,7 @@ GEM
     coderay (1.1.1)
     concurrent-ruby (1.0.2)
     erubis (2.7.0)
+    ffaker (2.2.0)
     ffi (1.9.13)
     geokit (1.10.0)
     geokit-rails (2.1.0)
@@ -159,6 +160,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   annotate
   byebug
+  ffaker
   geokit-rails
   listen (~> 3.0.5)
   paperclip (~> 5.0.0)

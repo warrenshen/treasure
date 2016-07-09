@@ -35,4 +35,11 @@ class GeoNote < ApplicationRecord
                    distance_field_name: :distance,
                    lat_column_name: :latitude,
                    lng_column_name: :longitude
+
+  before_create :initialize_votes
+
+  def initialize_votes
+    self.upvotes = 0
+    self.downvotes = 0
+  end
 end
