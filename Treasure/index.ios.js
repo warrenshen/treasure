@@ -29,7 +29,7 @@ class Treasure extends Component {
     return (
       <TabBarIOS
         barTintColor={'white'}
-        tintColor={'blue'}
+        tintColor={'#FF765F'}
         unselectedTintColor={'gray'}
       >
         <TabBarIOS.Item
