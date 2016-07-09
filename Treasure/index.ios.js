@@ -15,6 +15,9 @@ import MePage from './javascripts/components/MePage';
 
 class Treasure extends Component {
 
+  // --------------------------------------------------
+  // State
+  // --------------------------------------------------
   constructor(props) {
     super(props);
     this.state = {

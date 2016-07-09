@@ -42,13 +42,12 @@ class MapPage extends Component {
         <MainMap />
         <CreateNoteModal
           isVisible={this.state.modalIsVisible}
-          onCancel={() => this._handleShowModal}
-          onPost={() => this._handlePostNote}
+          onCancel={() => this._handleHideModal()}
+          onPost={() => this._handlePostNote()}
         />
         <TouchableHighlight
-          onPress={() => this._handleHideModal()}
-          style={styles.button}
-        >
+          onPress={() => this._handleShowModal()}
+          style={styles.button}>
           <Text>Create Post</Text>
         </TouchableHighlight>
       </View>
@@ -62,6 +61,12 @@ class MapPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  button: {
+    backgroundColor: '#eeeeee',
+    padding: 10,
+    marginRight: 5,
+    marginLeft: 5,
   },
 });
 
