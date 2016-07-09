@@ -29,8 +29,8 @@ class Treasure extends Component {
     return (
       <TabBarIOS
         barTintColor={'white'}
-        tintColor={'white'}
-        unselectedTintColor={'yellow'}
+        tintColor={'blue'}
+        unselectedTintColor={'gray'}
       >
         <TabBarIOS.Item
           onPress={() => this.setState({ selectedTab: 'home' })}

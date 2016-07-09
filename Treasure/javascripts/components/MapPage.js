@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 // UI
 import {
   StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
 } from 'react-native';
 
 import CreateNoteModal from '../components/CreateNoteModal';
@@ -38,7 +41,7 @@ class MapPage extends Component {
       <View style={styles.container}>
         <MainMap />
         <CreateNoteModal
-          isVisible={createNoteModalIsVisible}
+          isVisible={this.state.modalIsVisible}
           onCancel={() => this._handleShowModal}
           onPost={() => this._handlePostNote}
         />
