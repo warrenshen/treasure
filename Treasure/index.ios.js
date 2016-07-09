@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps';
+import CreateNoteModal from './components/CreateNoteModal';
 import MainMap from './components/MainMap';
 
 class Treasure extends Component {
@@ -25,19 +26,19 @@ class Treasure extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      noteCreationModalIsVisible: false,
+      createNoteModalIsVisible: false,
     };
   }
   // --------------------------------------------------
   // Event Handlers
   // --------------------------------------------------
 
-  _handleShowNoteCreationModal() {
-      this.setState({noteCreationModalIsVisible: true});
+  _handleShowCreateNoteModal() {
+      this.setState({createNoteModalIsVisible: true});
   }
 
-  _handleHideNoteCreationModal() {
-      this.setState({noteCreationModalIsVisible: false});
+  _handleHideCreateNoteModal() {
+      this.setState({createNoteModalIsVisible: false});
   }
 
   _handlePostNote() {
@@ -45,45 +46,22 @@ class Treasure extends Component {
   }
 
   render() {
-    const {
-      latitude,
-      longitude,
-    } = this.state;
+    const {createNoteModalIsVisible} = this.state;
+
     return (
       <View style={styles.container}>
         <MainMap />
-        <Modal
-          animationType={"slide"}
-          transparent={false}
-          visible={this.state.noteCreationModalIsVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-         <View style={{marginTop: 22}}>
-          <View style={styles.actions}>
-            <TouchableHighlight
-              onPress={() => {
-                this._handlePostNote()
-              }}
-              style={styles.button}>
-              <Text>Post</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => {
-                this._handleHideNoteCreationModal()
-              }}
-              style={styles.button}>
-              <Text>Cancel</Text>
-            </TouchableHighlight>
-          </View>
-         </View>
-        </Modal>
-
+        <CreateNoteModal
+          isVisible={createNoteModalIsVisible}
+          onCancel={this._handleHideCreateNoteModal.bind(this)}
+          onPost={this._handlePostNote.bind(this)}
+        />
         <TouchableHighlight
             onPress={() => {
-              this._handleShowNoteCreationModal()
+              this._handleShowCreateNoteModal()
             }}
             style={styles.button}>
-          <Text>Send</Text>
+          <Text>Create Post</Text>
         </TouchableHighlight>
       </View>
     );
@@ -107,16 +85,14 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+
   button: {
     backgroundColor: '#eeeeee',
     padding: 10,
     marginRight: 5,
     marginLeft: 5,
   },
-  actions: {
-    flex: 1,
-    flexDirection: 'row',
-  },
+
 });
 
 AppRegistry.registerComponent('Treasure', () => Treasure);
