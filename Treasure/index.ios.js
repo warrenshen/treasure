@@ -22,6 +22,8 @@ class Treasure extends Component {
     super(props);
     this.state = {
       selectedTab: 'home',
+      createNoteModalIsVisible: false,
+      isPostingNote: false,
     };
   }
 

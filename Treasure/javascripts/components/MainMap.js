@@ -1,5 +1,5 @@
 // Libraries
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 // UI
 import {
@@ -11,6 +11,10 @@ import Requester from '../helpers/requester';
 import MapView from 'react-native-maps';
 
 class MainMap extends Component {
+  static propTypes = {
+    isPostingNote: PropTypes.bool.isRequired,
+    updatePostCoord: PropTypes.func.isRequired,
+  };
 
   constructor(props) {
     super(props);
@@ -18,6 +22,7 @@ class MainMap extends Component {
       latitude: 37.78825,
       longitude: -122.4324,
       markers: [],
+      isPostingNote: false,
     };
     this.watchID = null;
   }
@@ -37,6 +42,7 @@ class MainMap extends Component {
         this.setState({
           latitude: coords.latitude,
           longitude: coords.longitude,
+          markerCoord: coords,
         });
       },
       (error) => alert(error.message),
@@ -57,27 +63,43 @@ class MainMap extends Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
+  _onMarkerDragEnd = (e) => {
+    const coord = e.nativeEvent.coordinate;
+    this.props.updatePostCoord(coord);
+    this.setState({ markerCoord: coord });
+  }
+
   render() {
     const {
       latitude,
       longitude,
+      markerCoord,
     } = this.state;
+    const { isPostingNote } = this.props;
     return (
       <MapView
-        followsUserLocation={true}
+        followsUserLocation={!isPostingNote}
         loadingEnabled={true}
         mapType={'standard'}
-        region={{
+        initialRegion={{
           latitude: latitude,
           longitude: longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
         }}
         showsBuildings={false}
         showsTraffic={false}
         showsUserLocation={true}
         style={styles.map}
       >
+      {isPostingNote &&
+        <MapView.Marker
+          draggable
+          coordinate={markerCoord}
+          key={`posting_marker`}
+          onDragEnd={this._onMarkerDragEnd}
+        />
+      }
       {this.state.markers.map(marker => (
         <MapView.Marker
           coordinate={{

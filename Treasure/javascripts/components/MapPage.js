@@ -19,6 +19,7 @@ class MapPage extends Component {
     super(props);
     this.state = {
       modalIsVisible: false,
+      isPostingNote: false,
     };
   }
 
@@ -30,14 +31,23 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: false });
   }
 
-  _handlePostNote() {
-    // TODO(shimmy):
+  _postNoteHandler = () => {
+    const { isPostingNote } = this.state;
+    if (isPostingNote) {
+      this.setState({createNoteModalIsVisible: true});
+    }
+    this.setState({isPostingNote: !isPostingNote});
+  }
+
+  _updatePostCoord = (postCoord) => {
+    this.setState({postCoord});
   }
 
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
   render() {
+    const { isPostingNote } = this.state;
     return (
       <Navigator
         initialRoute={{ index: 0, title: 'Explore' }}
@@ -60,16 +70,22 @@ class MapPage extends Component {
         )}
         renderScene={(route, navigator) => (
           <View style={styles.container}>
-            <MainMap />
+            <MainMap
+              isPostingNote={isPostingNote}
+              updatePostCoord={this._updatePostCoord}
+            />
             <CreateNoteModal
               isVisible={this.state.modalIsVisible}
               onCancel={() => this._handleHideModal()}
               onPost={() => this._handlePostNote()}
             />
             <TouchableHighlight
-              onPress={() => this._handleShowModal()}
-              style={styles.button}>
-              <Text>Create Post</Text>
+              onPress={this._postNoteHandler}
+              style={styles.button}
+            >
+              <Text>
+                {isPostingNote ? 'Set Location' : 'Post Note'}
+              </Text>
             </TouchableHighlight>
           </View>
         )}
