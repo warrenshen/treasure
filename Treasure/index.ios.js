@@ -11,8 +11,8 @@ import {
   Modal,
 } from 'react-native';
 
-import CreateNoteModal from './components/CreateNoteModal';
-import MainMap from './components/MainMap';
+import CreateNoteModal from './javascripts/components/CreateNoteModal';
+import MainMap from './javascripts/components/MainMap';
 
 class Treasure extends Component {
 
