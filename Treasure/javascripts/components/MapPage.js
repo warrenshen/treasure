@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 // UI
 import {
+  Navigator,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -38,19 +39,41 @@ class MapPage extends Component {
   // --------------------------------------------------
   render() {
     return (
-      <View style={styles.container}>
-        <MainMap />
-        <CreateNoteModal
-          isVisible={this.state.modalIsVisible}
-          onCancel={() => this._handleHideModal()}
-          onPost={() => this._handlePostNote()}
-        />
-        <TouchableHighlight
-          onPress={() => this._handleShowModal()}
-          style={styles.button}>
-          <Text>Create Post</Text>
-        </TouchableHighlight>
-      </View>
+      <Navigator
+        initialRoute={{ index: 0, title: 'Explore' }}
+        navigationBar={(
+          <Navigator.NavigationBar
+            routeMapper={{
+              LeftButton: (route, navigator, index, navState) =>
+               { return (<Text>Cancel</Text>); },
+              RightButton: (route, navigator, index, navState) =>
+                { return (<Text>Done</Text>); },
+              Title: (route, navigator, index, navState) =>
+                { return (
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.text}>Treasure</Text>
+                  </View>
+                ); },
+            }}
+            style={styles.navbar}
+          />
+        )}
+        renderScene={(route, navigator) => (
+          <View style={styles.container}>
+            <MainMap />
+            <CreateNoteModal
+              isVisible={this.state.modalIsVisible}
+              onCancel={() => this._handleHideModal()}
+              onPost={() => this._handlePostNote()}
+            />
+            <TouchableHighlight
+              onPress={() => this._handleShowModal()}
+              style={styles.button}>
+              <Text>Create Post</Text>
+            </TouchableHighlight>
+          </View>
+        )}
+      />
     );
   }
 }
@@ -61,12 +84,23 @@ class MapPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 64,
   },
   button: {
     backgroundColor: '#eeeeee',
     padding: 10,
     marginRight: 5,
     marginLeft: 5,
+  },
+  navbar: {
+    backgroundColor: '#FF765F',
+  },
+  text: {
+    color: 'white',
+  },
+  title: {
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
 });
 
