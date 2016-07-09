@@ -27,25 +27,25 @@ class CreateNoteModal extends Component {
   render() {
     return (
       <Modal
-          animationType={"slide"}
-          transparent={false}
-          visible={this.props.isVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-         <View style={{marginTop: 22}}>
-          <View style={styles.actions}>
-            <TouchableHighlight
-              onPress={this.props.onPost}
-              style={styles.button}>
-              <Text>Post</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={this.props.onCancel}
-              style={styles.button}>
-              <Text>Cancel</Text>
-            </TouchableHighlight>
-          </View>
-         </View>
+        animationType={"slide"}
+        transparent={false}
+        visible={this.props.isVisible}
+        onRequestClose={() => {alert("Modal has been closed.")}}
+        >
+       <View style={{marginTop: 22}}>
+        <View style={styles.actions}>
+          <TouchableHighlight
+            onPress={this.props.onPost}
+            style={styles.button}>
+            <Text>Post</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            onPress={this.props.onCancel}
+            style={styles.button}>
+            <Text>Cancel</Text>
+          </TouchableHighlight>
+        </View>
+       </View>
       </Modal>
     );
   }
