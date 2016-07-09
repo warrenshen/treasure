@@ -4,93 +4,53 @@ import React, { Component } from 'react';
 // UI
 import {
   AppRegistry,
-  StyleSheet,
+  TabBarIOS,
   Text,
-  View,
   TouchableHighlight,
-  Modal,
+  View,
 } from 'react-native';
 
-import CreateNoteModal from './javascripts/components/CreateNoteModal';
-import MainMap from './javascripts/components/MainMap';
+import MapPage from  './javascripts/components/MapPage';
+import MePage from './javascripts/components/MePage';
 
 class Treasure extends Component {
 
-  // --------------------------------------------------
-  // Props
-  // --------------------------------------------------
-  // --------------------------------------------------
-  // State
-  // --------------------------------------------------
   constructor(props) {
     super(props);
     this.state = {
-      createNoteModalIsVisible: false,
+      selectedTab: 'home',
     };
   }
 
   // --------------------------------------------------
   // Event Handlers
   // --------------------------------------------------
-  _handleShowCreateNoteModal() {
-      this.setState({createNoteModalIsVisible: true});
-  }
-
-  _handleHideCreateNoteModal() {
-      this.setState({createNoteModalIsVisible: false});
-  }
-
-  _handlePostNote() {
-    // TODO(shimmy):
-  }
-
   render() {
-    const {createNoteModalIsVisible} = this.state;
     return (
-      <View style={styles.container}>
-        <MainMap />
-        <CreateNoteModal
-          isVisible={createNoteModalIsVisible}
-          onCancel={this._handleHideCreateNoteModal.bind(this)}
-          onPost={this._handlePostNote.bind(this)}
-        />
-        <TouchableHighlight
-            onPress={() => {
-              this._handleShowCreateNoteModal()
-            }}
-            style={styles.button}>
-          <Text>Create Post</Text>
-        </TouchableHighlight>
-      </View>
+      <TabBarIOS
+        barTintColor={'white'}
+        tintColor={'white'}
+        unselectedTintColor={'yellow'}
+      >
+        <TabBarIOS.Item
+          onPress={() => this.setState({ selectedTab: 'home' })}
+          selected={this.state.selectedTab === 'home'}
+          systemIcon={'search'}
+          title={'Map'}
+        >
+          <MapPage />
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          onPress={() => this.setState({ selectedTab: 'me' })}
+          selected={this.state.selectedTab === 'me'}
+          systemIcon={'contacts'}
+          title={'Me'}
+        >
+          <MePage />
+        </TabBarIOS.Item>
+      </TabBarIOS>
     );
   }
 }
-
-// --------------------------------------------------
-// Styles
-// --------------------------------------------------
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-
-  button: {
-    backgroundColor: '#eeeeee',
-    padding: 10,
-    marginRight: 5,
-    marginLeft: 5,
-  },
-
-});
 
 AppRegistry.registerComponent('Treasure', () => Treasure);
