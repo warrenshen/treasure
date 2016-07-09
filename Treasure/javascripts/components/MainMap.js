@@ -17,6 +17,7 @@ class MainMap extends Component {
     this.state = {
       latitude: 37.78825,
       longitude: -122.4324,
+      markers: [],
     };
     this.watchID = null;
   }
@@ -28,7 +29,7 @@ class MainMap extends Component {
     Requester.get(
       'http://localhost:3000/geo_notes',
       {},
-      (geoNotes) => console.log(geoNotes)
+      (geoNotes) => this.setState({ markers: geoNotes })
     );
     navigator.geolocation.getCurrentPosition(
       (response) => {
@@ -77,14 +78,14 @@ class MainMap extends Component {
         showsUserLocation={true}
         style={styles.map}
       >
-      {[1].map(marker => (
+      {this.state.markers.map(marker => (
         <MapView.Marker
           coordinate={{
-            latitude: 37.484556,
-            longitude: -122.147845,
+            latitude: parseFloat(marker.latitude),
+            longitude: parseFloat(marker.longitude),
           }}
           description={'Description'}
-          key={marker}
+          key={marker.id}
           title={'Test'}
         />
       ))}
