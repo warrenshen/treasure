@@ -6,6 +6,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
+import Requester from '../helpers/requester';
+
 import MapView from 'react-native-maps';
 
 class MainMap extends Component {
@@ -23,6 +25,11 @@ class MainMap extends Component {
   // Render
   // --------------------------------------------------
   componentDidMount() {
+    Requester.get(
+      'http://localhost:3000/geo_notes',
+      {},
+      (geoNotes) => console.log(geoNotes)
+    );
     navigator.geolocation.getCurrentPosition(
       (response) => {
         const coords = response.coords;

@@ -9,7 +9,7 @@
 #  longitude               :decimal(, )
 #  phone_id                :string
 #  upvotes                 :integer
-#  downvote                :integer
+#  downvotes               :integer
 #  note_text               :string
 #  note_image_file_name    :string
 #  note_image_content_type :string
