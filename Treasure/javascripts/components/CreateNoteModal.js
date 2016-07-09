@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 // UI
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
