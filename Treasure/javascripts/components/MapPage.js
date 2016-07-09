@@ -34,13 +34,13 @@ class MapPage extends Component {
   _postNoteHandler = () => {
     const { isPostingNote } = this.state;
     if (isPostingNote) {
-      this.setState({createNoteModalIsVisible: true});
+      this.setState({ modalIsVisible: true });
     }
-    this.setState({isPostingNote: !isPostingNote});
+    this.setState({ isPostingNote: !isPostingNote });
   }
 
   _updatePostCoord = (postCoord) => {
-    this.setState({postCoord});
+    this.setState({ postCoord });
   }
 
   // --------------------------------------------------
