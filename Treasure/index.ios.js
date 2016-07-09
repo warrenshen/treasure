@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps';
+import MainMap from './components/MainMap';
 
 class Treasure extends Component {
 
@@ -24,8 +25,6 @@ class Treasure extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      latitude: 37.78825,
-      longitude: -122.4324,
       noteCreationModalIsVisible: false,
     };
   }
@@ -45,32 +44,6 @@ class Treasure extends Component {
     // TODO(shimmy):
   }
 
-  // --------------------------------------------------
-  // Render
-  // --------------------------------------------------
-  componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (response) => {
-        const coords = response.coords;
-        this.setState({
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        });
-      },
-      (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-    navigator.geolocation.watchPosition(
-      (response) => {
-        const coords = response.coords;
-        this.setState({
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        });
-      }
-    );
-  }
-
   render() {
     const {
       latitude,
@@ -78,33 +51,7 @@ class Treasure extends Component {
     } = this.state;
     return (
       <View style={styles.container}>
-        <MapView
-          followsUserLocation={true}
-          loadingEnabled={true}
-          mapType={'standard'}
-          region={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          showsBuildings={false}
-          showsTraffic={false}
-          showsUserLocation={true}
-          style={styles.map}
-        >
-        {[1].map(marker => (
-          <MapView.Marker
-            coordinate={{
-              latitude: 37.484556,
-              longitude: -122.147845,
-            }}
-            description={'Description'}
-            key={marker}
-            title={'Test'}
-          />
-        ))}
-        </MapView>
+        <MainMap />
         <Modal
           animationType={"slide"}
           transparent={false}
@@ -149,13 +96,6 @@ class Treasure extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
   },
   welcome: {
     fontSize: 20,
