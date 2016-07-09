@@ -8,6 +8,7 @@ import {
   Text,
   View,
   TouchableHighlight,
+  Modal,
 } from 'react-native';
 
 class Treasure extends Component {
@@ -15,6 +16,26 @@ class Treasure extends Component {
   // --------------------------------------------------
   // Props
   // --------------------------------------------------
+  // --------------------------------------------------
+  // State
+  // --------------------------------------------------
+  constructor(props) {
+    super(props);
+    this.state = {
+      noteCreationModalIsVisible: false,
+    };
+  }
+  // --------------------------------------------------
+  // Event Handlers
+  // --------------------------------------------------
+
+  _handleShowNoteCreationModal() {
+      this.setState({noteCreationModalIsVisible: true});
+  }
+
+  _handleHideNoteCreationModal() {
+      this.setState({noteCreationModalIsVisible: false});
+  }
 
   // --------------------------------------------------
   // Render
@@ -22,18 +43,30 @@ class Treasure extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-        <TouchableHighlight onPress={this._onPressButtonGET} style={styles.button}>
-          <Text>GET</Text>
+        <Modal
+          animationType={"slide"}
+          transparent={false}
+          visible={this.state.noteCreationModalIsVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+         <View style={{marginTop: 22}}>
+          <View>
+            <TouchableHighlight
+              onPress={() => {
+                this._handleHideNoteCreationModal()
+              }}
+              style={styles.button}>
+              <Text>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+         </View>
+        </Modal>
+        <TouchableHighlight
+            onPress={() => {
+              this._handleShowNoteCreationModal()
+            }}
+            style={styles.button}>
+          <Text>Send</Text>
         </TouchableHighlight>
       </View>
 
