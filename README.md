@@ -1,10 +1,10 @@
-![alt tag](https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png = 250x250)
+<img src=https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png" width="250">
 
 # Treasure
 
 ###### Find hidden gems everywhere!
 
-![alt tag](https://github.com/warrenshen/treasure/blob/master/mocks/0home.png)
+![image](https://github.com/warrenshen/treasure/blob/master/mocks/0home.png)
 
 ## Summary
 
