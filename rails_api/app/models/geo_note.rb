@@ -8,8 +8,6 @@
 #  latitude                :decimal(, )
 #  longitude               :decimal(, )
 #  phone_id                :string
-#  upvotes                 :integer
-#  downvotes               :integer
 #  note_text               :string
 #  note_image_file_name    :string
 #  note_image_content_type :string
@@ -36,12 +34,8 @@ class GeoNote < ApplicationRecord
                    lat_column_name: :latitude,
                    lng_column_name: :longitude
 
-  before_create :initialize_votes
-
   validates :latitude, :longitude, :phone_id, :note_text, presence: true
 
-  def initialize_votes
-    self.upvotes = 0
-    self.downvotes = 0
-  end
+  # Acts as votable
+  acts_as_votable
 end
