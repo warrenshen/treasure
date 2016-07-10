@@ -7,13 +7,14 @@ import {
   Navigator,
   StyleSheet,
   Text,
-  TouchableHighlight,
   View,
 } from 'react-native';
 
 import Requester from '../utils/requester';
-import CreateNoteModal from '../components/CreateNoteModal';
-import MainMap from '../components/MainMap';
+
+import CreatePage from './CreatePage';
+import MainMap from './MainMap';
+import NavbarButton from './NavbarButton'
 
 const mapRoutes = [
   { index: 0, title: 'Treasure' },
@@ -28,6 +29,7 @@ class MapPage extends Component {
       coordIsValid: true,
       isPostingNote: false,
       markers: [],
+      postContent: '',
       postCoord: { latitude: 0, longitude: 0 },
     };
   }
@@ -44,31 +46,30 @@ class MapPage extends Component {
     );
   }
 
-  _handleShowModal = () => {
-    this.setState({ modalIsVisible: true });
+  _handlePostChange = (noteText) => {
+    this.setState({ postContent: noteText });
   }
 
-  _handlePostNote = (noteText, navigator) => {
-    this.setState({ isPostingNote: false });
-
-    const { postCoord } = this.state;
+  _handlePostNote = (navigator) => {
+    const {
+      postCoord,
+      postContent,
+    } = this.state;
     var params = {
-      note_text: noteText,
+      note_text: postContent,
       latitude: postCoord.latitude,
       longitude: postCoord.longitude,
     };
+    this.setState({ isPostingNote: false });
     Requester.post(
       'http://localhost:3000/geo_notes',
       params,
       (newNote) => {
         this.setState(update(this.state, { markers: { $push: [newNote] } }));
+        this.setState({ postContent: '' });
         navigator.pop();
       }
     );
-  }
-
-  _handleHideModal = () => {
-    this.setState({ modalIsVisible: false });
   }
 
   _updatePostCoord = (postCoord, coordIsValid) => {
@@ -76,15 +77,6 @@ class MapPage extends Component {
       postCoord,
       coordIsValid,
     });
-  }
-
-  _postNoteHandler = (navigator) => {
-    const { isPostingNote } = this.state;
-    if (isPostingNote) {
-      navigator.push(mapRoutes[1]);
-    } else {
-      this.setState({ isPostingNote: !isPostingNote });
-    }
   }
 
   // --------------------------------------------------
@@ -95,6 +87,7 @@ class MapPage extends Component {
       coordIsValid,
       isPostingNote,
       markers,
+      postContent,
       postCoord,
     } = this.state;
     return (
@@ -105,47 +98,53 @@ class MapPage extends Component {
           <Navigator.NavigationBar
             routeMapper={{
               LeftButton: (route, navigator, index, navState) => {
-                if (isPostingNote) {
-                  return (
-                    <TouchableHighlight
+                if (index === 0) {
+                  return isPostingNote && (
+                    <NavbarButton
+                      textContent={'Cancel'}
                       onPress={() => this.setState({ isPostingNote: false })}
-                      style={styles.button}
-                    >
-                      <Text>Cancel</Text>
-                    </TouchableHighlight>
+                    />
+                  );
+                } else {
+                  return (
+                    <NavbarButton
+                      textContent={'Cancel'}
+                      onPress={() => {
+                        this.setState({
+                          isPostingNote: false,
+                          postContent: '',
+                        });
+                        navigator.pop();
+                      }}
+                    />
                   );
                 }
               },
               RightButton: (route, navigator, index, navState) => {
-                let postNoteButtons;
-                if (isPostingNote) {
-                  postNoteButtons = (
-                    <TouchableHighlight
+                if (index === 0) {
+                  return isPostingNote ? (
+                    <NavbarButton
                       disabled={!coordIsValid}
+                      imageSource={require('../../images/write.png')}
                       onPress={() => navigator.push(mapRoutes[1])}
-                      style={styles.button}
-                    >
-                      <Text>
-                        {coordIsValid ? 'Set Location' : 'Fuck you, user.'}
-                      </Text>
-                    </TouchableHighlight>
-                  );
-                } else {
-                  postNoteButtons = (
-                    <TouchableHighlight
-                      onPress={() => {this.setState({
+                    />
+                  ) : (
+                    <NavbarButton
+                      imageSource={require('../../images/write.png')}
+                      onPress={() => this.setState({
                         coordIsValid: true,
                         isPostingNote: true,
-                      });}}
-                      style={styles.button}
-                    >
-                      <Text>Post Note</Text>
-                    </TouchableHighlight>
+                      })}
+                    />
+                  );
+                } else {
+                  return (
+                    <NavbarButton
+                      imageSource={require('../../images/write.png')}
+                      onPress={() => this._handlePostNote(navigator)}
+                    />
                   );
                 }
-                return (
-                  <View>{postNoteButtons}</View>
-                )
               },
               Title: (route, navigator, index, navState) => (
                 <Text style={styles.text}>{route.title}</Text>
@@ -167,10 +166,9 @@ class MapPage extends Component {
             );
           } else {
             return (
-              <CreateNoteModal
-                isVisible={true}
-                onCancel={this._handleHideModal}
-                onPost={(text) => this._handlePostNote(text, navigator)}
+              <CreatePage
+                noteContent={postContent}
+                onContentChange={this._handlePostChange}
               />
             );
         }}}
@@ -187,12 +185,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 64,
   },
-  button: {
-    backgroundColor: '#eeeeee',
-    padding: 10,
-    marginRight: 5,
-    marginLeft: 5,
-  },
   navbar: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -206,7 +198,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   text: {
-    paddingTop: 8,
+    paddingTop: 10,
     color: 'white',
     fontFamily: 'JosefinSans-Bold',
     fontSize: 24,
