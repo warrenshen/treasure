@@ -4,9 +4,9 @@
 
 ###### Geocached notes with a pirate twist!
 
-<img src="https://github.com/warrenshen/treasure/blob/master/mocks/0home.png" alt="Drawing" width="300px"/>
-<img src="https://github.com/warrenshen/treasure/blob/master/mocks/2note.png" alt="Drawing" width="300px"/>
-<img src="https://github.com/warrenshen/treasure/blob/master/mocks/6treasure.png" alt="Drawing" width="300px"/>
+<img src="https://github.com/warrenshen/treasure/blob/master/mocks/0home.png" alt="Drawing" width="250px"/>
+<img src="https://github.com/warrenshen/treasure/blob/master/mocks/2note.png" alt="Drawing" width="250px"/>
+<img src="https://github.com/warrenshen/treasure/blob/master/mocks/6treasure.png" alt="Drawing" width="250px"/>
 
 ## Overview
 
@@ -26,5 +26,5 @@ Notes have an upvoting and flagging system.
 #### Treasure
 A note that is popular enough becomes Treasure. Treasure will be specially sorted. Treasure creation and viewing should be special and visually pleasing.
 
-# Push Notifications
+#### Push Notifications
 Each note has a range where it can result in a push notification, dependent on its own popularity and the note density (number of surrounding notes).
