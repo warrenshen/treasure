@@ -10,6 +10,7 @@ import {
   Modal,
   TouchableHighlight,
   TouchableWithoutFeedback,
+  Image,
 } from 'react-native';
 
 class ViewNoteModal extends Component {
@@ -54,20 +55,23 @@ class ViewNoteModal extends Component {
               <View style={styles.modal}>
                 <View style={styles.header}>
                   <View style={styles.title}>
-                    <Text styles={styles.titleText}>
+                    <Text style={styles.titleText}>
                       {"Title"}
                     </Text>
                   </View>
                   <View style={styles.action}>
-                    <TouchableHighlight
+                    <TouchableWithoutFeedback
                       onPress={onCancel}
                       style={styles.button}>
-                        <Text style={styles.actionText}>X</Text>
-                    </TouchableHighlight>
+                        <Image
+                          source={require('../../images/x.png')}
+                          style={styles.cancel}
+                        />
+                    </TouchableWithoutFeedback>
                   </View>
                 </View>
-                <View style={styles.textInputContainer}>
-                  <Text style={styles.textInput}>
+                <View style={styles.bodyContainer}>
+                  <Text style={styles.body}>
                     {bodyText}
                   </Text>
                 </View>
@@ -106,13 +110,37 @@ class ViewNoteModal extends Component {
     },
     modal: {
       backgroundColor: 'white',
-      height: 500,
-      width: 300,
+      paddingRight: 20,
+      paddingLeft: 20,
+      paddingTop: 20,
+      paddingBottom: 20,
+      height: 520,
+      width: 340,
+    },
+
+    cancel: {
+      width: 30,
+      height: 30,
     },
 
     button: {
       marginRight: 5,
       marginLeft: 5,
+    },
+
+    titleText: {
+      fontFamily: 'JosefinSans-Bold',
+      fontSize: 20,
+    },
+
+    body: {
+      fontSize: 18,
+      // paddingLeft: 20,
+    },
+
+    city: {
+      color: '#CCCCCC',
+      fontSize: 18,
     },
 
     footer: {
@@ -125,9 +153,6 @@ class ViewNoteModal extends Component {
     header: {
       paddingTop: 10,
       paddingBottom: 10,
-      paddingLeft: 10,
-      paddingRight: 10,
-      backgroundColor: 'brown',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
