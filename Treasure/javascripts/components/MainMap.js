@@ -72,10 +72,8 @@ class MainMap extends Component {
 
   _onMarkerDragEnd = (region) => {
     if (!this.props.isPostingNote) return;
-
     const { latitude, longitude } = this.state;
     const postDistance = meterDistance({latitude, longitude}, region);
-
     this.props.updatePostCoord(region, postDistance < this.props.legalPostRadius);
   }
 
@@ -95,8 +93,8 @@ class MainMap extends Component {
           latitude: latitude,
           longitude: longitude,
         }}
-        fillColor={!isPostingNote ? '#0591FF33' : 'red'}
-        key={`circle_${latitude}_${longitude}`}
+        fillColor={!isPostingNote ? '#0591FF33' : '#FF765F33'}
+        key={`circle_${!isPostingNote ? 'view' : 'post'}_${latitude}_${longitude}`}
         radius={!isPostingNote ? legalViewRadius : legalPostRadius}
         strokeColor={'#66666666'}
       />
@@ -136,7 +134,10 @@ class MainMap extends Component {
             key={marker.id}
             onSelect={() => onMarkerPress(marker)}
           >
-            <Image source={require('../../images/pin.png')} style={styles.pin} />
+            {markerDistance.popularity > 20 ?
+              <Image source={require('../../images/pin.png')} style={styles.pin} /> :
+              <Image source={require('../../images/pin-treasure.png')} style={styles.pin} />
+            }
           </MapView.Marker>
         );
       }
