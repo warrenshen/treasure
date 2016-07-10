@@ -1,34 +1,34 @@
-(1..1000).each do
+(1..100).each do
   geonote = GeoNote.create(
-    latitude: 37.485 + (Random.rand - Random.rand) * 0.1,
-    longitude: 122.148 + (Random.rand - Random.rand) * 0.1,
+    latitude: 37.479828 + (Random.rand - Random.rand) * 0.1,
+    longitude: -122.146524 + (Random.rand - Random.rand) * 0.1,
     phone_id: FFaker::PhoneNumber.imei,
     note_text: FFaker::Lorem.phrase,
   )
 end
-puts "created 1000 geonotes in Menlo Park"
+puts "created 100 geonotes in Menlo Park"
 
 treasure1 = GeoNote.create(
-  latitude: 37.485,
-  longitude: 122.148,
+  latitude: 37.479828,
+  longitude: -122.146524,
   phone_id: FFaker::PhoneNumber.imei,
   note_text: FFaker::Lorem.phrase,
 )
 treasure2 = GeoNote.create(
-  latitude: 37.487,
-  longitude: 122.152,
+  latitude: 37.479830,
+  longitude: -122.146514,
   phone_id: FFaker::PhoneNumber.imei,
   note_text: FFaker::Lorem.phrase,
 )
 treasure3 = GeoNote.create(
-  latitude: 37.48,
-  longitude: 122.14,
+  latitude: 37.479808,
+  longitude: -122.146527,
   phone_id: FFaker::PhoneNumber.imei,
   note_text: FFaker::Lorem.phrase,
 )
 puts "created 3 treasures in Menlo Park"
 
-(1...150).each do |id|
+(1...100).each do |id|
   user = User.create(device_id: id)
   if Random.rand > 0.66
     treasure1.liked_by user
@@ -38,4 +38,4 @@ puts "created 3 treasures in Menlo Park"
     treasure3.liked_by user
   end
 end
-puts "created 150 users"
+puts "created 100 users"
