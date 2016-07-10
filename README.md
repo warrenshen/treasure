@@ -1,4 +1,4 @@
-<img src=https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png" width="250">
+![image](https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png =100px)
 
 # Treasure
 
