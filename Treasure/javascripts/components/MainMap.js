@@ -131,7 +131,7 @@ class MainMap extends Component {
                 latitude: parseFloat(marker.latitude),
                 longitude: parseFloat(marker.longitude),
               }}
-              onSelect={() => onMarkerPress(marker.note_text, marker.id)}
+              onSelect={() => onMarkerPress(marker)}
               key={marker.id}
             >
               <Image source={require('../../images/pin.png')} style={styles.pin} />

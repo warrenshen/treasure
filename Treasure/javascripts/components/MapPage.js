@@ -63,15 +63,17 @@ class MapPage extends Component {
     this.setState({ createNoteModalIsVisible: false });
   }
 
-  _handleShowViewNoteModal = (description, id) => {
+  _handleShowViewNoteModal = (marker) => {
     // Renders the View Note Modal
     // TODO: pass in upvotes and shit
     // TODO: Add in the city or something
+    const {note_text, id, popularity} = marker;
 
     this.setState({
       viewNoteModalIsVisible: true,
-      currentMarkerDescription: description,
+      currentMarkerDescription: note_text,
       currentMarkerId: id,
+      currentMarkerPopularity: popularity,
     });
   }
 
@@ -108,6 +110,17 @@ class MapPage extends Component {
     );
   }
 
+  _handleUpVote = () => {
+
+    var params = {
+      id: id,
+    }
+    Requester.post(
+      'http://localhost:3000/geo_notes',
+      params,
+      )
+  }
+
   _updatePostCoord = (postCoord, coordIsValid) => {
     this.setState({
       postCoord,
@@ -122,6 +135,7 @@ class MapPage extends Component {
     const {
       viewNoteModalIsVisible,
       currentMarkerDescription,
+      currentMarkerPopularity,
       currentMarkerId,
       coordIsValid,
       isPostingNote,
@@ -202,6 +216,7 @@ class MapPage extends Component {
                   isVisible={viewNoteModalIsVisible}
                   onCancel={this._handleHideViewModal}
                   bodyText={currentMarkerDescription}
+                  popularity={currentMarkerPopularity}
                   currentMarkerId={currentMarkerId}
                 />
                 {isPostingNote &&
