@@ -125,13 +125,13 @@ class MainMap extends Component {
             fillColor={'#0591FF33'}
             strokeColor={'#66666666'}
           />
-          {markers.map(marker => console.log(marker) || (
+          {markers.map(marker => (
             <MapView.Marker
               coordinate={{
                 latitude: parseFloat(marker.latitude),
                 longitude: parseFloat(marker.longitude),
               }}
-              onSelect={() => onMarkerPress(marker.note_text, marker.id, marker.popularity)}
+              onSelect={() => onMarkerPress(marker)}
               key={marker.id}
             >
               <Image source={require('../../images/pin.png')} style={styles.pin} />

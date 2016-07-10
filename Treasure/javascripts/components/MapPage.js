@@ -63,14 +63,15 @@ class MapPage extends Component {
     this.setState({ createNoteModalIsVisible: false });
   }
 
-  _handleShowViewNoteModal = (description, id, popularity) => {
+  _handleShowViewNoteModal = (marker) => {
     // Renders the View Note Modal
     // TODO: pass in upvotes and shit
     // TODO: Add in the city or something
+    const {note_text, id, popularity} = marker;
 
     this.setState({
       viewNoteModalIsVisible: true,
-      currentMarkerDescription: description,
+      currentMarkerDescription: note_text,
       currentMarkerId: id,
       currentMarkerPopularity: popularity,
     });
@@ -107,6 +108,17 @@ class MapPage extends Component {
         navigator.pop();
       }
     );
+  }
+
+  _handleUpVote = () => {
+
+    var params = {
+      id: id,
+    }
+    Requester.post(
+      'http://localhost:3000/geo_notes',
+      params,
+      )
   }
 
   _updatePostCoord = (postCoord, coordIsValid) => {
