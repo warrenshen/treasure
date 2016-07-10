@@ -1,5 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
+import update from 'react-addons-update';
 
 // UI
 import {
@@ -27,7 +28,18 @@ class MapPage extends Component {
       modalIsVisible: false,
       isPostingNote: false,
       postCoordIsValid: true,
+      markers: [],
     };
+  }
+
+  componentWillMount() {
+    Requester.get(
+      'http://localhost:3000/geo_notes', {},
+      geoNotes => {
+        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude && e.note_text));
+        this.setState({ markers: geoNotes });
+      }
+    );
   }
 
   _handleShowModal = () => {
@@ -50,7 +62,13 @@ class MapPage extends Component {
     Requester.post(
       'http://localhost:3000/geo_notes',
       params,
+<<<<<<< HEAD
       (json) => navigator.pop()
+=======
+      newNote => this.setState(update(this.state, {
+        markers: {$push: [newNote]},
+      }))
+>>>>>>> c75d645f792919709fdccd94f0ddde769ba4e326
     );
   }
 
@@ -82,7 +100,48 @@ class MapPage extends Component {
   // Render
   // --------------------------------------------------
   render() {
+<<<<<<< HEAD
     const { isPostingNote, postCoordIsValid } = this.state;
+=======
+    const { isPostingNote, postCoordIsValid, markers } = this.state;
+
+    let postNoteButtons;
+    if (isPostingNote) {
+      postNoteButtons = [(
+        <TouchableHighlight
+          onPress={() => this.setState({ modalIsVisible: true })}
+          style={styles.button}
+          disabled={!postCoordIsValid}
+          key={1}
+        >
+          <Text>
+            {postCoordIsValid ? 'Set Location' : 'Fuck you, user.'}
+          </Text>
+        </TouchableHighlight>
+      ), (
+        <TouchableHighlight
+          onPress={() => this.setState({ isPostingNote: false })}
+          style={styles.button}
+          key={2}
+        >
+          <Text>Cancel</Text>
+        </TouchableHighlight>
+      )]
+    } else {
+      postNoteButtons = (
+        <TouchableHighlight
+          onPress={() => this.setState({
+            isPostingNote: true,
+            postCoordIsValid: true,
+          })}
+          style={styles.button}
+        >
+          <Text>Post Note</Text>
+        </TouchableHighlight>
+      )
+    }
+
+>>>>>>> c75d645f792919709fdccd94f0ddde769ba4e326
     return (
       <Navigator
         initialRoute={routes[0]}
@@ -130,6 +189,7 @@ class MapPage extends Component {
             style={styles.navbar}
           />
         )}
+<<<<<<< HEAD
         renderScene={(route, navigator) => {
           if (route.index == 0) {
             return (
@@ -149,6 +209,23 @@ class MapPage extends Component {
               />
             );
         }}}
+=======
+        renderScene={(route, navigator) => (
+          <View style={styles.container}>
+            <MainMap
+              markers={markers}
+              isPostingNote={isPostingNote}
+              updatePostCoord={this._updatePostCoord}
+            />
+            <CreateNoteModal
+              isVisible={this.state.modalIsVisible}
+              onCancel={this._handleHideModal}
+              onPost={this._handlePostNote}
+            />
+            {postNoteButtons}
+          </View>
+        )}
+>>>>>>> c75d645f792919709fdccd94f0ddde769ba4e326
       />
     );
   }
