@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 // UI
 import {
   AppRegistry,
+  StyleSheet,
   TabBarIOS,
   Text,
   TouchableHighlight,

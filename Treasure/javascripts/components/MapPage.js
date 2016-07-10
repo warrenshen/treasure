@@ -62,16 +62,11 @@ class MapPage extends Component {
         navigationBar={(
           <Navigator.NavigationBar
             routeMapper={{
-              LeftButton: (route, navigator, index, navState) =>
-               { return (<Text>Cancel</Text>); },
-              RightButton: (route, navigator, index, navState) =>
-                { return (<Text>Done</Text>); },
-              Title: (route, navigator, index, navState) =>
-                { return (
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.text}>Treasure</Text>
-                  </View>
-                ); },
+              LeftButton: () => null,
+              RightButton: () => null,
+              Title: (route, navigator, index, navState) => (
+                <Text style={styles.text}>Treasure</Text>
+              ),
             }}
             style={styles.navbar}
           />
@@ -117,14 +112,20 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   navbar: {
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FF765F',
+    shadowColor: '#333333',
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
   },
   text: {
+    paddingTop: 8,
     color: 'white',
-  },
-  title: {
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
   },
 });
 
