@@ -31,8 +31,9 @@ Each note has a range where it can result in a push notification, dependent on i
 
 ## Technologies
 
-<img src="http://cljsrn.org/img/react.svg" alt="Drawing" width="100px" vertical-align="middle"/>
-#### React Native
 
-<img src="https://achievement-images.teamtreehouse.com/badges_SimpleFacebook_Stage1.png" alt="Drawing" width="100px" vertical-align="middle"/>
+#### React Native
+<img src="http://cljsrn.org/img/react.svg" alt="Drawing" width="100px" vertical-align="middle"/>
+
 #### Ruby on Rails
+<img src="https://achievement-images.teamtreehouse.com/badges_SimpleFacebook_Stage1.png" alt="Drawing" width="100px" vertical-align="middle"/>
