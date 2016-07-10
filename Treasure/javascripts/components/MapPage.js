@@ -54,11 +54,11 @@ class MapPage extends Component {
       this.setState({ treasures: geoNotes });
     };
     Requester.get(
-      'http://localhost:3000/geo_notes', {},
+      `${Requester.railsApp}/geo_notes`, {},
       handleGeoNotes,
     );
     Requester.post(
-      'http://localhost:3000/geo_notes/visible_treasure',
+      `${Requester.railsApp}/geo_notes/visible_treasure`,
       {latitude: coords.latitude, longitude: coords.longitude},
       handleTreasures,
     );
@@ -94,7 +94,7 @@ class MapPage extends Component {
     }
     const endpoint = up ? 'upvote' : 'downvote';
     Requester.post(
-      `http://localhost:3000/geo_notes/${endpoint}`,
+      `${Requester.railsApp}/geo_notes/${endpoint}`,
       params,
       (marker) => this.setState({currentMarker: marker}),
     );
@@ -119,7 +119,7 @@ class MapPage extends Component {
     this.setState({ isPostingNote: false });
 
     Requester.post(
-      'http://localhost:3000/geo_notes',
+      `${Requester.railsApp}/geo_notes`,
       params,
       (newNote) => {
         this.setState(update(this.state, { markers: { $push: [newNote] } }));

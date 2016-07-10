@@ -107,7 +107,7 @@ class ViewNoteModal extends Component {
                   scrollEnabled={true}>
                   {noteImageUrl &&
                     <Image
-                      source={{uri: `http://localhost:3000${noteImageUrl}`}}
+                      source={{uri: `${Requester.railsApp}/${noteImageUrl}`}}
                       style={styles.image}
                     />
                   }
