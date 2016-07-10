@@ -67,15 +67,6 @@ class MapPage extends Component {
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
-  /*
-  <TouchableHighlight
-    onPress={() => this.setState({ isPostingNote: false })}
-    style={styles.button}
-    key={2}
-  >
-    <Text>Cancel</Text>
-  </TouchableHighlight>
-  */
   render() {
     const { isPostingNote, postCoordIsValid } = this.state;
     return (
