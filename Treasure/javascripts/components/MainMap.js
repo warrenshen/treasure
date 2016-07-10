@@ -17,6 +17,7 @@ class MainMap extends Component {
     isPostingNote: PropTypes.bool.isRequired,
     updatePostCoord: PropTypes.func.isRequired,
     legalPostRadius: PropTypes.number.isRequired,
+    markers: PropTypes.array.isRequired,
   };
 
   static defaultProps = {
@@ -28,7 +29,6 @@ class MainMap extends Component {
     this.state = {
       latitude: 37.78825,
       longitude: -122.4324,
-      markers: [],
       isPostingNote: false,
     };
     this.watchID = null;
@@ -38,14 +38,6 @@ class MainMap extends Component {
   // Render
   // --------------------------------------------------
   componentDidMount() {
-    Requester.get(
-      'http://localhost:3000/geo_notes',
-      {},
-      (geoNotes) => {
-        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude));
-        this.setState({ markers: geoNotes });
-      }
-    );
     navigator.geolocation.getCurrentPosition(
       (response) => {
         const coords = response.coords;
@@ -94,7 +86,11 @@ class MainMap extends Component {
       longitude,
       markerCoord,
     } = this.state;
-    const { isPostingNote, legalPostRadius } = this.props;
+    const {
+      isPostingNote,
+      legalPostRadius,
+      markers
+    } = this.props;
     return (
       <MapView
         followsUserLocation={!isPostingNote}
@@ -129,7 +125,7 @@ class MainMap extends Component {
           onDragEnd={this._onMarkerDragEnd}
         />
       }
-      {this.state.markers.map(marker => (
+      {markers.map(marker => (
         <MapView.Marker
           coordinate={{
             latitude: parseFloat(marker.latitude),
