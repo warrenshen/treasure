@@ -155,39 +155,61 @@ class MainMap extends Component {
     return (
       <View style={styles.container}>
         {!isInitializing && (
-          <MapView
-            followsUserLocation={!isPostingNote}
-            loadingEnabled={true}
-            mapType={'standard'}
-            onRegionChangeComplete={this._onMarkerDragEnd}
-            initialRegion={{
-              latitude: latitude,
-              longitude: longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            }}
-            showsBuildings={false}
-            showsTraffic={false}
-            showsUserLocation={!isPostingNote}
-            style={styles.map}
-          >
-            {this.renderCircle()}
-            {this.renderMarkers()}
-            {!isPostingNote && (
+          !isPostingNote ? (
+            <MapView
+              followsUserLocation={!isPostingNote}
+              initialRegion={{
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}
+              loadingEnabled={true}
+              mapType={'standard'}
+              onRegionChangeComplete={this._onMarkerDragEnd}
+              region={{
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}
+              showsBuildings={false}
+              showsTraffic={false}
+              showsUserLocation={!isPostingNote}
+              style={styles.map}
+            >
+              {this.renderCircle()}
+              {this.renderMarkers()}
               <MapView.Marker
                 coordinate={{
                   latitude: latitude,
                   longitude: longitude,
                 }}
-                key={`pirate_marker_${latitude}_${longitude}`}
-              >
-                <Image
-                  source={require('../../images/pirate-me.png')}
-                  style={styles.pirate}
-                />
-              </MapView.Marker>
-            )}
-          </MapView>
+                image={require('../../images/pirate-me.png')}
+                key={`pirate_view_${latitude}_${longitude}`}
+              />
+            </MapView>
+          ) : (
+            <MapView
+              followsUserLocation={!isPostingNote}
+              initialRegion={{
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}
+              loadingEnabled={true}
+              mapType={'standard'}
+              onRegionChangeComplete={this._onMarkerDragEnd}
+              showsBuildings={false}
+              showsTraffic={false}
+              showsUserLocation={!isPostingNote}
+              style={styles.map}
+            >
+              {this.renderCircle()}
+              {this.renderMarkers()}
+            </MapView>
+          )
         )}
         {isPostingNote && (
           <View style={styles.iconContainer} pointerEvents={'none'}>
