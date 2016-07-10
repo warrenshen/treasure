@@ -2,13 +2,13 @@
 
 # Treasure
 
-###### Find hidden gems everywhere!
+###### Geocached notes with a pirate twist!
 
 <img src="https://github.com/warrenshen/treasure/blob/master/mocks/0home.png" alt="Drawing" width="375px"/>
 
-## Summary
+## Overview
 
-Geocache notes for others. The best notes become Treasure!
+Place notes at your current location, and see other's notes in the same area (posted from any time in the past). The most popular notes in an area become Treasure. Usually, notes can't be seen unless you're within around 200 meters of them, but a Treasure is visible from further and further out the more popular it becomes. This app is hyper-local - so you can share your adventures through location rather than time, and so it leads you on an adventure discovering Treasure after Treasure!
 
 ## Features
 
