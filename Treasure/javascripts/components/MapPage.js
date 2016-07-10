@@ -15,6 +15,7 @@ import Requester from '../utils/requester';
 import CreatePage from './CreatePage';
 import MainMap from './MainMap';
 import NavbarButton from './NavbarButton'
+import ViewNoteModal from '../components/ViewNoteModal';
 
 const mapRoutes = [
   { index: 0, title: 'Treasure' },
@@ -26,6 +27,9 @@ class MapPage extends Component {
     super(props);
     this.state = {
       coordIsValid: true,
+      viewNoteModalIsVisible: false,
+      currentMarkerDescription: "",
+      currentMarkerId: 0,
       isPostingNote: false,
       markers: [],
       postContent: '',
@@ -52,6 +56,26 @@ class MapPage extends Component {
 
   _handleImageSourceChange = (imageSource) => {
     this.setState({ postImageSource: imageSource });
+  }
+
+  _handleHideCreateModal = () => {
+    this.setState({ createNoteModalIsVisible: false });
+  }
+
+  _handleShowViewNoteModal = (description, id) => {
+    // Renders the View Note Modal
+    // TODO: pass in upvotes and shit
+    // TODO: Add in the city or something
+
+    this.setState({
+      viewNoteModalIsVisible: true,
+      currentMarkerDescription: description,
+      currentMarkerId: id,
+    });
+  }
+
+  _handleHideViewModal = () => {
+    this.setState({ viewNoteModalIsVisible: false });
   }
 
   _handlePostNote = (navigator) => {
@@ -95,6 +119,9 @@ class MapPage extends Component {
   // --------------------------------------------------
   render() {
     const {
+      viewNoteModalIsVisible,
+      currentMarkerDescription,
+      currentMarkerId,
       coordIsValid,
       isPostingNote,
       markers,
@@ -103,6 +130,7 @@ class MapPage extends Component {
       postCoord,
     } = this.state;
     return (
+
       <Navigator
         initialRoute={mapRoutes[0]}
         initialRoutes={mapRoutes}
@@ -171,8 +199,15 @@ class MapPage extends Component {
               <View style={styles.container}>
                 <MainMap
                   isPostingNote={isPostingNote}
+                  onMarkerPress={this._handleShowViewNoteModal}
                   markers={markers}
                   updatePostCoord={this._updatePostCoord}
+                />
+                <ViewNoteModal
+                  isVisible={viewNoteModalIsVisible}
+                  onCancel={this._handleHideViewModal}
+                  bodyText={currentMarkerDescription}
+                  currentMarkerId={currentMarkerId}
                 />
               </View>
             );
