@@ -20,7 +20,6 @@ export default {
   post: (route, params, resolve, reject) => {
     // this is gross and not React-y but yolo
     params.phone_id = DeviceInfo.getUniqueID();
-
     fetch(route, {
       body: JSON.stringify(params),
       cache: 'default',

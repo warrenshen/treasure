@@ -15,22 +15,30 @@ import Requester from '../utils/requester';
 import CreateNoteModal from '../components/CreateNoteModal';
 import MainMap from '../components/MainMap';
 
+const mapRoutes = [
+  { index: 0, title: 'Treasure' },
+  { index: 1, title: 'Note' },
+];
+
 class MapPage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      modalIsVisible: false,
+      coordIsValid: true,
       isPostingNote: false,
       markers: [],
+      postCoord: { latitude: 0, longitude: 0 },
     };
   }
 
   componentWillMount() {
     Requester.get(
       'http://localhost:3000/geo_notes', {},
-      geoNotes => {
-        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude && e.note_text));
+      (geoNotes) => {
+        geoNotes = geoNotes.filter((e) => e.latitude &&
+                                          e.longitude &&
+                                          e.note_text);
         this.setState({ markers: geoNotes });
       }
     );
@@ -40,26 +48,22 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: true });
   }
 
-  _handlePostNote = (noteText) => {
-    this.setState({
-      isPostingNote: false,
-      modalIsVisible: false,
-    });
+  _handlePostNote = (noteText, navigator) => {
+    this.setState({ isPostingNote: false });
 
     const { postCoord } = this.state;
-
     var params = {
       note_text: noteText,
       latitude: postCoord.latitude,
       longitude: postCoord.longitude,
     };
-
     Requester.post(
       'http://localhost:3000/geo_notes',
       params,
-      newNote => this.setState(update(this.state, {
-        markers: {$push: [newNote]},
-      }))
+      (newNote) => {
+        this.setState(update(this.state, { markers: { $push: [newNote] } }));
+        navigator.pop();
+      }
     );
   }
 
@@ -67,90 +71,109 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: false });
   }
 
-  _updatePostCoord = (postCoord, postCoordIsValid) => {
+  _updatePostCoord = (postCoord, coordIsValid) => {
     this.setState({
       postCoord,
-      postCoordIsValid,
+      coordIsValid,
     });
+  }
+
+  _postNoteHandler = (navigator) => {
+    const { isPostingNote } = this.state;
+    if (isPostingNote) {
+      navigator.push(mapRoutes[1]);
+    } else {
+      this.setState({ isPostingNote: !isPostingNote });
+    }
   }
 
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
   render() {
-    const { isPostingNote, postCoordIsValid, markers } = this.state;
-
-    let postNoteButtons;
-    if (isPostingNote) {
-      postNoteButtons = [(
-        <TouchableHighlight
-          onPress={() => this.setState({ modalIsVisible: true })}
-          style={styles.button}
-          disabled={!postCoordIsValid}
-          key={1}
-        >
-          <Text>
-            {postCoordIsValid ? 'Set Location' : 'Fuck you, user.'}
-          </Text>
-        </TouchableHighlight>
-      ), (
-        <TouchableHighlight
-          onPress={() => this.setState({ isPostingNote: false })}
-          style={styles.button}
-          key={2}
-        >
-          <Text>Cancel</Text>
-        </TouchableHighlight>
-      )]
-    } else {
-      postNoteButtons = (
-        <TouchableHighlight
-          onPress={() => this.setState({
-            isPostingNote: true,
-            postCoordIsValid: true,
-          })}
-          style={styles.button}
-        >
-          <Text>Post Note</Text>
-        </TouchableHighlight>
-      )
-    }
-
+    const {
+      coordIsValid,
+      isPostingNote,
+      markers,
+      postCoord,
+    } = this.state;
     return (
       <Navigator
-        initialRoute={{ index: 0, title: 'Explore' }}
+        initialRoute={mapRoutes[0]}
+        initialRoutes={mapRoutes}
         navigationBar={(
           <Navigator.NavigationBar
             routeMapper={{
-              LeftButton: (route, navigator, index, navState) =>
-               { return (<Text>Cancel</Text>); },
-              RightButton: (route, navigator, index, navState) =>
-                { return (<Text>Done</Text>); },
-              Title: (route, navigator, index, navState) =>
-                { return (
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.text}>Treasure</Text>
-                  </View>
-                ); },
+              LeftButton: (route, navigator, index, navState) => {
+                if (isPostingNote) {
+                  return (
+                    <TouchableHighlight
+                      onPress={() => this.setState({ isPostingNote: false })}
+                      style={styles.button}
+                    >
+                      <Text>Cancel</Text>
+                    </TouchableHighlight>
+                  );
+                }
+              },
+              RightButton: (route, navigator, index, navState) => {
+                let postNoteButtons;
+                if (isPostingNote) {
+                  postNoteButtons = (
+                    <TouchableHighlight
+                      disabled={!coordIsValid}
+                      onPress={() => navigator.push(mapRoutes[1])}
+                      style={styles.button}
+                    >
+                      <Text>
+                        {coordIsValid ? 'Set Location' : 'Fuck you, user.'}
+                      </Text>
+                    </TouchableHighlight>
+                  );
+                } else {
+                  postNoteButtons = (
+                    <TouchableHighlight
+                      onPress={() => {this.setState({
+                        coordIsValid: true,
+                        isPostingNote: true,
+                      });}}
+                      style={styles.button}
+                    >
+                      <Text>Post Note</Text>
+                    </TouchableHighlight>
+                  );
+                }
+                return (
+                  <View>{postNoteButtons}</View>
+                )
+              },
+              Title: (route, navigator, index, navState) => (
+                <Text style={styles.text}>{route.title}</Text>
+              ),
             }}
             style={styles.navbar}
           />
         )}
-        renderScene={(route, navigator) => (
-          <View style={styles.container}>
-            <MainMap
-              markers={markers}
-              isPostingNote={isPostingNote}
-              updatePostCoord={this._updatePostCoord}
-            />
-            <CreateNoteModal
-              isVisible={this.state.modalIsVisible}
-              onCancel={this._handleHideModal}
-              onPost={this._handlePostNote}
-            />
-            {postNoteButtons}
-          </View>
-        )}
+        renderScene={(route, navigator) => {
+          if (route.index == 0) {
+            return (
+              <View style={styles.container}>
+                <MainMap
+                  isPostingNote={isPostingNote}
+                  markers={markers}
+                  updatePostCoord={this._updatePostCoord}
+                />
+              </View>
+            );
+          } else {
+            return (
+              <CreateNoteModal
+                isVisible={true}
+                onCancel={this._handleHideModal}
+                onPost={(text) => this._handlePostNote(text, navigator)}
+              />
+            );
+        }}}
       />
     );
   }
@@ -171,14 +194,22 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   navbar: {
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FF765F',
+    shadowColor: '#333333',
+    shadowOffset: {
+      height: 1,
+      width: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
   },
   text: {
+    paddingTop: 8,
     color: 'white',
-  },
-  title: {
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
+    fontFamily: 'JosefinSans-Bold',
+    fontSize: 24,
   },
 });
 
