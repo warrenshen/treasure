@@ -1,5 +1,4 @@
 <img src="https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png" alt="Drawing" width="100px"/>
-
 # Treasure
 
 ###### Geocached notes with a pirate twist!
