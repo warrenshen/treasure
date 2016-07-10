@@ -27,7 +27,7 @@ class MePage extends Component {
         'What\'s good my homie g thangy thang.',
         'Nothin\' much yo!',
       ]),
-      modalIsVisible: false,
+      modalIsVisible: false, // What is this for?
     };
   }
 

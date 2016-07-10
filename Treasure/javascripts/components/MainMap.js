@@ -16,6 +16,7 @@ class MainMap extends Component {
   static propTypes = {
     isPostingNote: PropTypes.bool.isRequired,
     updatePostCoord: PropTypes.func.isRequired,
+    onMarkerPress: PropTypes.func.isRequired,
     legalPostRadius: PropTypes.number.isRequired,
     markers: PropTypes.array.isRequired,
   };
@@ -90,6 +91,7 @@ class MainMap extends Component {
       isPostingNote,
       legalPostRadius,
       markers,
+      onMarkerPress
     } = this.props;
     return (
       <MapView
@@ -131,9 +133,9 @@ class MainMap extends Component {
             latitude: parseFloat(marker.latitude),
             longitude: parseFloat(marker.longitude),
           }}
-          description={marker.note_text}
-          key={marker.id}
-        />
+          onSelect={() => onMarkerPress(marker.note_text, marker.id)}
+          key={marker.id}>
+          </MapView.Marker>
       ))}
       </MapView>
     );
