@@ -34,6 +34,11 @@ class GeoNotesController < ApplicationController
     200
   end
 
+  # The maximum visible treasure radius
+  def max_radius
+    2000
+  end
+
   def popularity(geonote)
     geonote.votes_for.up.size - geonote.votes_for.down.size
   end
@@ -63,11 +68,11 @@ class GeoNotesController < ApplicationController
     render json: GeoNote.within(base_radius, units: :meters, origin: center).all.select{|geonote| not is_treasure(geonote)}
   end
 
-   # Returns a list of visible treasure
+  # Returns a list of visible treasure
   def visible_treasure
     user = params.permit(:latitude, :longitude)
     center = Geokit::LatLng.new(user[:latitude], user[:longitude])
-    render json: GeoNote.all.select{|geonote| is_treasure(geonote) \
+    render json: GeoNote.within(max_radius, units: :meters, origin: center).all.select{|geonote| is_treasure(geonote) \
       and radius(geonote) > center.distance_to(Geokit::LatLng.new(geonote[:latitude], geonote[:longitude]), units: :meters)}
   end
 
