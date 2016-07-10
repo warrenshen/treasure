@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 // UI
 import {
   AppRegistry,
+  StatusBar,
+  StyleSheet,
   TabBarIOS,
   Text,
   TouchableHighlight,
@@ -32,30 +34,45 @@ class Treasure extends Component {
   // --------------------------------------------------
   render() {
     return (
-      <TabBarIOS
-        barTintColor={'white'}
-        tintColor={'#FF765F'}
-        unselectedTintColor={'gray'}
-      >
-        <TabBarIOS.Item
-          onPress={() => this.setState({ selectedTab: 'home' })}
-          selected={this.state.selectedTab === 'home'}
-          systemIcon={'search'}
-          title={'Map'}
+      <View style={styles.container}>
+        <StatusBar
+          backgroundColor={'transparent'}
+          barStyle={'light-content'}
+        />
+        <TabBarIOS
+          barTintColor={'white'}
+          tintColor={'#FF765F'}
+          unselectedTintColor={'gray'}
         >
-          <MapPage />
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          onPress={() => this.setState({ selectedTab: 'me' })}
-          selected={this.state.selectedTab === 'me'}
-          systemIcon={'contacts'}
-          title={'Me'}
-        >
-          <MePage />
-        </TabBarIOS.Item>
-      </TabBarIOS>
+          <TabBarIOS.Item
+            onPress={() => this.setState({ selectedTab: 'home' })}
+            selected={this.state.selectedTab === 'home'}
+            systemIcon={'search'}
+            title={'Map'}
+          >
+            <MapPage />
+          </TabBarIOS.Item>
+          <TabBarIOS.Item
+            onPress={() => this.setState({ selectedTab: 'me' })}
+            selected={this.state.selectedTab === 'me'}
+            systemIcon={'contacts'}
+            title={'Me'}
+          >
+            <MePage />
+          </TabBarIOS.Item>
+        </TabBarIOS>
+      </View>
     );
   }
 }
+
+// --------------------------------------------------
+// Styles
+// --------------------------------------------------
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 AppRegistry.registerComponent('Treasure', () => Treasure);
