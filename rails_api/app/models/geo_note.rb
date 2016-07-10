@@ -38,6 +38,8 @@ class GeoNote < ApplicationRecord
 
   before_create :initialize_votes
 
+  validates :latitude, :longitude, :phone_id, :note_text, presence: true
+
   def initialize_votes
     self.upvotes = 0
     self.downvotes = 0
