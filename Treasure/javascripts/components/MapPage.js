@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableHighlight,
 } from 'react-native';
 
 import Requester from '../utils/requester';
@@ -122,6 +123,7 @@ class MapPage extends Component {
     const {
       viewNoteModalIsVisible,
       currentMarkerDescription,
+      currentMarkerPopularity,
       currentMarkerId,
       coordIsValid,
       isPostingNote,
@@ -163,13 +165,7 @@ class MapPage extends Component {
               },
               RightButton: (route, navigator, index, navState) => {
                 if (index === 0) {
-                  return isPostingNote ? (
-                    <NavbarButton
-                      disabled={!coordIsValid}
-                      imageSource={require('../../images/write.png')}
-                      onPress={() => navigator.push(mapRoutes[1])}
-                    />
-                  ) : (
+                  return !isPostingNote && (
                     <NavbarButton
                       imageSource={require('../../images/write.png')}
                       onPress={() => this.setState({
@@ -199,17 +195,27 @@ class MapPage extends Component {
             return (
               <View style={styles.container}>
                 <MainMap
-                  isPostingNote={isPostingNote}
-                  onMarkerPress={this._handleShowViewNoteModal}
                   markers={markers}
+                  onMarkerPress={this._handleShowViewNoteModal}
+                  isPostingNote={isPostingNote}
                   updatePostCoord={this._updatePostCoord}
                 />
                 <ViewNoteModal
                   isVisible={viewNoteModalIsVisible}
                   onCancel={this._handleHideViewModal}
                   bodyText={currentMarkerDescription}
+                  popularity={currentMarkerPopularity}
                   currentMarkerId={currentMarkerId}
                 />
+                {isPostingNote &&
+                  <TouchableHighlight
+                    onPress={() => navigator.push(mapRoutes[1])}
+                    style={styles.setNoteButton}>
+                    <View style={styles.centerText}>
+                      <Text style={{color: '#333'}}>Set Note Here</Text>
+                    </View>
+                  </TouchableHighlight>
+                }
               </View>
             );
           } else {
@@ -232,7 +238,11 @@ class MapPage extends Component {
 // --------------------------------------------------
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     paddingTop: 64,
   },
   navbar: {
@@ -252,6 +262,20 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: 'JosefinSans-Bold',
     fontSize: 24,
+  },
+  setNoteButton: {
+    backgroundColor: 'white',
+    position: 'absolute',
+    bottom: 78,
+    left: 30,
+    right: 30,
+    height: 50,
+  },
+  centerText: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 });
 

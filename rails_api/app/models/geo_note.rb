@@ -36,6 +36,6 @@ class GeoNote < ApplicationRecord
 
   validates :latitude, :longitude, :phone_id, :note_text, presence: true
 
-  # Acts as votable
+  # Votable
   acts_as_votable
 end

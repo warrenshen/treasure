@@ -3,9 +3,12 @@ import React, { Component, PropTypes } from 'react';
 
 // UI
 import {
+  View,
+  Image,
   StyleSheet,
 } from 'react-native';
 
+import NewMarker from './NewMarker.js';
 import Requester from '../utils/requester';
 import { meterDistance } from '../utils/geo.js';
 
@@ -72,13 +75,13 @@ class MainMap extends Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  _onMarkerDragEnd = (e) => {
-    const coord = e.nativeEvent.coordinate;
-    const { latitude, longitude } = this.state;
-    const postDistance = meterDistance({latitude, longitude}, coord);
+  _onMarkerDragEnd = (region) => {
+    if (!this.props.isPostingNote) return;
 
-    this.props.updatePostCoord(coord, postDistance < this.props.legalPostRadius);
-    this.setState({ markerCoord: coord });
+    const { latitude, longitude } = this.state;
+    const postDistance = meterDistance({latitude, longitude}, region);
+
+    this.props.updatePostCoord(region, postDistance < this.props.legalPostRadius);
   }
 
   // TODO: Turn off the preview onpress for Marker
@@ -87,7 +90,6 @@ class MainMap extends Component {
     const {
       latitude,
       longitude,
-      markerCoord,
     } = this.state;
     const {
       isPostingNote,
@@ -96,50 +98,52 @@ class MainMap extends Component {
       onMarkerPress,
     } = this.props;
     return (
-      <MapView
-        followsUserLocation={!isPostingNote}
-        loadingEnabled={true}
-        mapType={'standard'}
-        initialRegion={{
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        }}
-        showsBuildings={false}
-        showsTraffic={false}
-        showsUserLocation={!isPostingNote}
-        style={styles.map}
-      >
-      <MapView.Circle
-        center={{
-          latitude: latitude,
-          longitude: longitude,
-        }}
-        key={`circle_${latitude}_${longitude}`}
-        radius={legalPostRadius}
-        fillColor={'#0591FF33'}
-        strokeColor={'#66666666'}
-      />
-      {isPostingNote &&
-        <MapView.Marker
-          draggable
-          coordinate={markerCoord}
-          key={`posting_marker`}
-          onDragEnd={this._onMarkerDragEnd}
-        />
-      }
-      {markers.map(marker => (
-        <MapView.Marker
-          coordinate={{
-            latitude: parseFloat(marker.latitude),
-            longitude: parseFloat(marker.longitude),
+      <View style={styles.container}>
+        <MapView
+          followsUserLocation={!isPostingNote}
+          loadingEnabled={true}
+          mapType={'standard'}
+          initialRegion={{
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
           }}
-          onSelect={() => onMarkerPress(marker.note_text, marker.id, marker.popularity)}
-          key={marker.id}>
-        </MapView.Marker>
-      ))}
-      </MapView>
+          showsBuildings={false}
+          showsTraffic={false}
+          showsUserLocation={!isPostingNote}
+          style={styles.map}
+          onRegionChangeComplete={this._onMarkerDragEnd}
+        >
+          <MapView.Circle
+            center={{
+              latitude: latitude,
+              longitude: longitude,
+            }}
+            key={`circle_${latitude}_${longitude}`}
+            radius={legalPostRadius}
+            fillColor={'#0591FF33'}
+            strokeColor={'#66666666'}
+          />
+          {markers.map(marker => console.log(marker) || (
+            <MapView.Marker
+              coordinate={{
+                latitude: parseFloat(marker.latitude),
+                longitude: parseFloat(marker.longitude),
+              }}
+              onSelect={() => onMarkerPress(marker.note_text, marker.id, marker.popularity)}
+              key={marker.id}
+            >
+              <Image source={require('../../images/pin.png')} style={styles.pin} />
+            </MapView.Marker>
+          ))}
+        </MapView>
+        {isPostingNote &&
+          <View style={styles.iconContainer} pointerEvents={'none'}>
+            <NewMarker />
+          </View>
+        }
+      </View>
     );
   }
 }
@@ -148,6 +152,13 @@ class MainMap extends Component {
 // Styles
 // --------------------------------------------------
 const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 64,
+    left: 0,
+    right: 0,
+    bottom: 48,
+  },
   map: {
     position: 'absolute',
     top: 0,
@@ -155,6 +166,17 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  iconContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  pin: {
+    width: 60,
+    height: 60,
+    opacity: 0.8,
+  }
 });
 
 export default MainMap;
