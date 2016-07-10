@@ -33,21 +33,34 @@ class MapPage extends Component {
       currentMarker: null,
       isPostingNote: false,
       markers: [],
+      treasures: [],
       postContent: '',
       postImageSource: null,
       postCoord: { latitude: 0, longitude: 0 },
     };
   }
 
-  componentWillMount() {
+  _queryMarkers = (coords) => {
+    const handleGeoNotes = (geoNotes) => {
+      geoNotes = geoNotes.filter((e) => e.latitude &&
+                                        e.longitude &&
+                                        e.note_text);
+      this.setState({ markers: geoNotes });
+    };
+    const handleTreasures = (geoNotes) => {
+      geoNotes = geoNotes.filter((e) => e.latitude &&
+                                        e.longitude &&
+                                        e.note_text);
+      this.setState({ treasures: geoNotes });
+    };
     Requester.get(
       'http://localhost:3000/geo_notes', {},
-      (geoNotes) => {
-        geoNotes = geoNotes.filter((e) => e.latitude &&
-                                          e.longitude &&
-                                          e.note_text);
-        this.setState({ markers: geoNotes });
-      }
+      handleGeoNotes,
+    );
+    Requester.post(
+      'http://localhost:3000/geo_notes/visible_treasure',
+      {latitude: coords.latitude, longitude: coords.longitude},
+      handleTreasures,
     );
   }
 
@@ -63,7 +76,8 @@ class MapPage extends Component {
     this.setState({ createNoteModalIsVisible: false });
   }
 
-  _handleShowViewNoteModal = (marker) => {
+  _handleShowViewNoteModal = (marker, treasure = false) => {
+    console.log('lol');
     this.setState({
       viewNoteModalIsVisible: true,
       currentMarker: marker,
@@ -132,6 +146,7 @@ class MapPage extends Component {
       coordIsValid,
       isPostingNote,
       markers,
+      treasures,
       postContent,
       postImageSource,
       postCoord,
@@ -158,7 +173,6 @@ class MapPage extends Component {
                       onPress={() => {
                         this.setState({
                           isPostingNote: false,
-                          postContent: '',
                         });
                         navigator.pop();
                       }}
@@ -199,9 +213,11 @@ class MapPage extends Component {
               <View style={styles.container}>
                 <MainMap
                   markers={markers}
+                  treasures={treasures}
                   onMarkerPress={this._handleShowViewNoteModal}
                   isPostingNote={isPostingNote}
                   updatePostCoord={this._updatePostCoord}
+                  queryMarkers={this._queryMarkers}
                 />
                 <ViewNoteModal
                   isVisible={viewNoteModalIsVisible}
@@ -209,7 +225,7 @@ class MapPage extends Component {
                   handleVote={this._handleVote}
                   marker={currentMarker}
                 />
-                {isPostingNote &&
+                {isPostingNote && (
                   <TouchableHighlight
                     onPress={() => navigator.push(mapRoutes[1])}
                     style={styles.setNoteButton}>
@@ -227,7 +243,7 @@ class MapPage extends Component {
                       />
                     </View>
                   </TouchableHighlight>
-                }
+                )}
               </View>
             );
           } else {

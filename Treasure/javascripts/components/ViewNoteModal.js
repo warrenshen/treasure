@@ -45,11 +45,11 @@ class ViewNoteModal extends Component {
   // Handlers
   // --------------------------------------------------
   _onCancel = () => {
-    this.props.onCancel();
     this.setState({
       downVoted: false,
       upVoted: false,
     });
+    this.props.onCancel();
   }
 
   render() {
