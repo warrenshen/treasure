@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   container: {
+    backgroundColor: 'white',
     position: 'absolute',
     top: 64,
     right: 0,
