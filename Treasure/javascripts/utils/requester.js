@@ -1,3 +1,5 @@
+import DeviceInfo from 'react-native-device-info';
+
 export default {
   get: (route, params, resolve, reject) => {
     const query = Object.keys(params)
@@ -16,6 +18,8 @@ export default {
     .then(json => json !== undefined && typeof resolve === 'function' && resolve(json));
   },
   post: (route, params, resolve, reject) => {
+    // this is gross and not React-y but yolo
+    params.phone_id = DeviceInfo.getUniqueID();
     fetch(route, {
       body: JSON.stringify(params),
       cache: 'default',
