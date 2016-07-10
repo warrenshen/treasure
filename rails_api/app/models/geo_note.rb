@@ -13,6 +13,7 @@
 #  note_image_content_type :string
 #  note_image_file_size    :integer
 #  note_image_updated_at   :datetime
+#  device_id               :string
 #
 # Indexes
 #
@@ -38,4 +39,6 @@ class GeoNote < ApplicationRecord
 
   # Votable
   acts_as_votable
+
+  belongs_to :user
 end

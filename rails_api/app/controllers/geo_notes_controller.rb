@@ -12,7 +12,7 @@ class GeoNotesController < ApplicationController
   def create
     create_params = params
                     .require(:geo_note)
-                    .permit(:latitude, :longitude, :phone_id, :note_text, :note_image)
+                    .permit(:device_id, :latitude, :longitude, :phone_id, :note_text, :note_image)
 
     # HACK: use the raw params because for some reason permit filters out the base64.
     # probably because it's way too big but yolo
@@ -59,6 +59,12 @@ class GeoNotesController < ApplicationController
   def radius(treasure)
     influence = 10
     base_radius + influence * popularity(treasure)
+  end
+
+  # Returns a list of my notes
+  def my_notes
+    device = params.permit(:device_id)
+    render json: GeoNote.where(device_id: device[:device_id]).all
   end
 
   # Returns a list of visible notes

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160710042721) do
+ActiveRecord::Schema.define(version: 20160710161610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160710042721) do
     t.string   "note_image_content_type"
     t.integer  "note_image_file_size"
     t.datetime "note_image_updated_at"
+    t.string   "device_id"
     t.index ["latitude", "longitude"], name: "index_geo_notes_on_latitude_and_longitude", using: :btree
     t.index ["phone_id"], name: "index_geo_notes_on_phone_id", using: :btree
   end
