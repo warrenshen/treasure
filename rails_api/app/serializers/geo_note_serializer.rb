@@ -23,6 +23,7 @@ class GeoNoteSerializer < ActiveModel::Serializer
   end
 
   def downvoted
+    return unless @instance_options[:device_id].present?
     user = User.where(device_id: @instance_options[:device_id]).take
     user.voted_down_on? object
   end
