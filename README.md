@@ -15,16 +15,16 @@ Place notes at your current location, and see other's notes in the same area (po
 ## Features
 
 #### Posting Notes
-Anywhere you are, you can place a note at your exact coordinates. 
+Anywhere you are, you can place a note anywhere within a very short distance of your coordinates. 
 
 #### Viewing Notes
-You can also view notes sorted by distance, popularity, and both. Notes can be viewed in map form.
+You can also view notes sorted in map form. The frequency of notes appearing is determined by an algorithm based on density and popularity.
 
-#### Note Sorting
-Notes have an upvoting and flagging system.
+#### Note Karma
+Notes have an upvoting and downvoting system.
 
 #### Treasure
-A note that is popular enough becomes Treasure. Treasure will be specially sorted. Treasure creation and viewing should be special and visually pleasing.
+A note that is popular enough becomes Treasure. Treasure will be specially displayed and can be seen from far away. Treasure creation and viewing should be special and visually pleasing.
 
 #### Push Notifications
 Each note has a range where it can result in a push notification, dependent on its own popularity and the note density (number of surrounding notes).
