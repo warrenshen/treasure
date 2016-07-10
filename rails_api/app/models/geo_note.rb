@@ -27,7 +27,7 @@ class GeoNote < ApplicationRecord
   has_attached_file :note_image,
                     styles: { medium: '400x400>', thumb: '100x100>' },
                     default_url: '/images/:style/missing.png'
-  validates_attachment_content_type :note_image, content_type: 'image/png'
+  validates_attachment_content_type :note_image, content_type: 'image/jpeg'
 
   # Geokit
   acts_as_mappable default_units: :miles,

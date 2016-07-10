@@ -22,7 +22,6 @@ const mapRoutes = [
 ];
 
 class MapPage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +29,7 @@ class MapPage extends Component {
       isPostingNote: false,
       markers: [],
       postContent: '',
+      postImageSource: null,
       postCoord: { latitude: 0, longitude: 0 },
     };
   }
@@ -50,23 +50,35 @@ class MapPage extends Component {
     this.setState({ postContent: noteText });
   }
 
+  _handleImageSourceChange = (imageSource) => {
+    this.setState({ postImageSource: imageSource });
+  }
+
   _handlePostNote = (navigator) => {
     const {
       postCoord,
       postContent,
+      postImageSource,
     } = this.state;
+
     var params = {
       note_text: postContent,
       latitude: postCoord.latitude,
       longitude: postCoord.longitude,
     };
+    debugger;
+    if (postImageSource) {
+      params.note_image = postImageSource.uri;
+    }
+
     this.setState({ isPostingNote: false });
+
     Requester.post(
       'http://localhost:3000/geo_notes',
       params,
       (newNote) => {
         this.setState(update(this.state, { markers: { $push: [newNote] } }));
-        this.setState({ postContent: '' });
+        this.setState({ postContent: '', postImageSource: null });
         navigator.pop();
       }
     );
@@ -88,6 +100,7 @@ class MapPage extends Component {
       isPostingNote,
       markers,
       postContent,
+      postImageSource,
       postCoord,
     } = this.state;
     return (
@@ -168,7 +181,9 @@ class MapPage extends Component {
             return (
               <CreatePage
                 noteContent={postContent}
+                noteImageSource={postImageSource}
                 onContentChange={this._handlePostChange}
+                onImageChange={this._handleImageSourceChange}
               />
             );
         }}}

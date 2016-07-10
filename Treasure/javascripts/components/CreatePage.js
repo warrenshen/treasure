@@ -10,13 +10,36 @@ import {
   TouchableHighlight,
   Modal,
   TextInput,
+  Image,
+  Dimensions,
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 
 class CreatePage extends Component {
 
   static propTypes = {
     noteContent: PropTypes.string.isRequired,
+    noteImageSource: PropTypes.object,
     onContentChange: PropTypes.func.isRequired,
+    onImageChange: PropTypes.func.isRequired,
+  }
+
+  _openCamera = () => {
+    ImagePicker.showImagePicker(response => {
+      if (response.didCancel || response.error) {
+        return;
+      }
+
+      // TODO: Faster, but base64 is currently how the API works (we can change later)
+      // if (Platform.OS === 'ios') {
+      //   const source = {uri: response.uri.replace('file://', ''), isStatic: true};
+      // } else {
+      //   const source = {uri: response.uri, isStatic: true};
+      // }
+
+      const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+      this.props.onImageChange(source);
+    });
   }
 
   // --------------------------------------------------
@@ -25,6 +48,7 @@ class CreatePage extends Component {
   render() {
     const {
       noteContent,
+      noteImageSource,
       onContentChange,
     } = this.props;
     return (
@@ -37,6 +61,16 @@ class CreatePage extends Component {
           style={styles.input}
           value={noteContent}
         />
+        {noteImageSource !== undefined &&
+          <Image source={noteImageSource} style={styles.noteImage} />
+        }
+        <View style={styles.buttonContainer}>
+          <TouchableHighlight
+            onPress={this._openCamera}
+            style={styles.button}>
+            <Text style={{color: '#fff'}}>Add Photo</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
@@ -55,7 +89,21 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
   },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#FF765F',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  noteImage: {
+    flex: 1
+  }
 });
 
 export default CreatePage;
-
