@@ -24,28 +24,51 @@ class GeoNotesController < ApplicationController
     render json: GeoNote.create(create_params)
   end
 
+  # The default treasure popularity minimum
+  def base_popularity
+    10
+  end
+
+  # The default visible note radius
+  def base_radius
+    200
+  end
+
   def popularity(geonote)
     geonote.votes_for.up.size - geonote.votes_for.down.size
   end
 
+  # The number of notes nearby
+  def density(geonote)
+    center = Geokit::LatLng.new(geonote[:latitude], geonote[:longitude])
+    GeoNote.within(base_radius, units: :meters, origin: center).all.size
+  end
+
+  # The treasure popularity minimum increases with density
   def is_treasure(geonote)
-    popularity(geonote) > 9
+    influence = 2
+    popularity(geonote) >= base_popularity + influence * density(geonote)
   end
 
-  # The radius of a geonote increases on a logarithmic scale depending on popularity and whether it is treasure
-  def radius(geonote)
-    if is_treasure(geonote)
-      200 + 100 * Math.log(popularity(geonote))
-    else
-      200
-    end
+  # The visible treasure radius increases with popularity
+  def radius(treasure)
+    influence = 10
+    base_radius + influence * popularity(treasure)
   end
 
-  def in_bounds
+  # Returns a list of visible notes
+  def visible_notes
     user = params.permit(:latitude, :longitude)
     center = Geokit::LatLng.new(user[:latitude], user[:longitude])
-    render json: GeoNote.all.select{|geonote| 
-      radius(geonote) > center.distance_to(Geokit::LatLng.new(geonote[:latitude], geonote[:longitude]), units: :meters)}
+    render json: GeoNote.within(base_radius, units: :meters, origin: center).all.select{|geonote| not is_treasure(geonote)}
+  end
+
+   # Returns a list of visible treasure
+  def visible_treasure
+    user = params.permit(:latitude, :longitude)
+    center = Geokit::LatLng.new(user[:latitude], user[:longitude])
+    render json: GeoNote.all.select{|geonote| is_treasure(geonote) \
+      and radius(geonote) > center.distance_to(Geokit::LatLng.new(geonote[:latitude], geonote[:longitude]), units: :meters)}
   end
 
   def upvote
