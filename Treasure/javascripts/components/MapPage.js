@@ -18,7 +18,7 @@ import NavbarButton from './NavbarButton'
 
 const mapRoutes = [
   { index: 0, title: 'Treasure' },
-  { index: 1, title: 'Note' },
+  { index: 1, title: 'Create Note' },
 ];
 
 class MapPage extends Component {
@@ -159,7 +159,7 @@ class MapPage extends Component {
                 }
               },
               Title: (route, navigator, index, navState) => (
-                <Text style={styles.text}>{route.title}</Text>
+                <Text style={styles.title}>{route.title}</Text>
               ),
             }}
             style={styles.navbar}
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
   },
-  text: {
+  title: {
     paddingTop: 10,
     color: 'white',
     fontFamily: 'JosefinSans-Bold',
