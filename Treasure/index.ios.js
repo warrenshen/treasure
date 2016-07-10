@@ -41,31 +41,36 @@ class Treasure extends Component {
         />
         <TabBarIOS
           barTintColor={'white'}
+          itemPositioning={'center'}
           tintColor={'#FF765F'}
-          unselectedTintColor={'gray'}
+          unselectedTintColor={'#999999'}
         >
           <TabBarIOS.Item
             onPress={() => this.setState({ selectedTab: 'home' })}
-            icon={require('./images/home.png')}
-            iconSize={30}
+            icon={require('./images/home@2x.png')}
+            iconSize={32}
             selected={this.state.selectedTab === 'home'}
-            selectedIcon={require('./images/home-selected.png')}
-            title={'Map'}
+            selectedIcon={require('./images/home-red@2x.png')}
+            title={'Nearby'}
           >
             <MapPage />
           </TabBarIOS.Item>
           <TabBarIOS.Item
-            onPress={() => this.setState({ selectedTab: 'me' })}
-            selected={this.state.selectedTab === 'me'}
-            systemIcon={'contacts'}
-            title={'Me'}
+            onPress={() => this.setState({ selectedTab: 'mine' })}
+            icon={require('./images/mine@2x.png')}
+            iconSize={32}
+            selected={this.state.selectedTab === 'mine'}
+            selectedIcon={require('./images/mine-red@2x.png')}
+            title={'Mine'}
           >
             <MePage />
           </TabBarIOS.Item>
           <TabBarIOS.Item
             onPress={() => this.setState({ selectedTab: 'info' })}
+            icon={require('./images/info@2x.png')}
+            iconSize={32}
             selected={this.state.selectedTab === 'info'}
-            systemIcon={'search'}
+            selectedIcon={require('./images/info-red@2x.png')}
             title={'Info'}
           >
             <MePage />
@@ -81,8 +86,8 @@ class Treasure extends Component {
 // --------------------------------------------------
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 AppRegistry.registerComponent('Treasure', () => Treasure);
