@@ -81,6 +81,8 @@ class MainMap extends Component {
     this.setState({ markerCoord: coord });
   }
 
+  // TODO: Turn off the preview onpress for Marker
+
   render() {
     const {
       latitude,

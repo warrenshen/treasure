@@ -28,6 +28,8 @@ class MapPage extends Component {
     this.state = {
       coordIsValid: true,
       viewNoteModalIsVisible: false,
+      currentMarkerDescription: "",
+      currentMarkerId: 0,
       isPostingNote: false,
       markers: [],
       postContent: '',
@@ -54,6 +56,10 @@ class MapPage extends Component {
 
   _handleImageSourceChange = (imageSource) => {
     this.setState({ postImageSource: imageSource });
+  }
+
+  _handleHideCreateModal = () => {
+    this.setState({ createNoteModalIsVisible: false });
   }
 
   _handleShowViewNoteModal = (description, id) => {
