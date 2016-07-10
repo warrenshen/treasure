@@ -8,11 +8,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import NewMarker from './NewMarker.js';
 import Requester from '../utils/requester';
 import { meterDistance } from '../utils/geo.js';
 
 import MapView from 'react-native-maps';
+import NewMarker from './NewMarker.js';
 
 
 class MainMap extends Component {
@@ -27,7 +27,7 @@ class MainMap extends Component {
 
   static defaultProps = {
     // Radii in meters
-    legalPostRadius: 50,
+    legalPostRadius: 100,
     legalViewRadius: 500,
   };
 
@@ -172,12 +172,22 @@ class MainMap extends Component {
           >
             {this.renderCircle()}
             {this.renderMarkers()}
-
-            {isPostingNote &&
+            {!isPostingNote && (
+              <MapView.Marker
+                coordinate={{
+                  latitude: latitude,
+                  longitude: longitude,
+                }}
+                key={`pirate_marker_${latitude}_${longitude}`}
+              >
+                <Image source={require('../../images/pirate-me.png')} style={styles.pirate} />
+              </MapView.Marker>
+            )}
+            {isPostingNote && (
               <View style={styles.iconContainer} pointerEvents={'none'}>
                 <NewMarker />
               </View>
-            }
+            )}
           </MapView>
         )}
       </View>

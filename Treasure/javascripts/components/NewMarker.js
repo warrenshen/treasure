@@ -12,22 +12,6 @@ export default class NewMarker extends Component {
     };
   }
 
-  render() {
-    return (
-      <Animated.Image
-        source={require('../../images/pin-add.png')}
-        style={{
-          height: 70,
-          width: 70,
-          opacity: 0.9,
-          transform: [
-            {scale: this.state.bounceValue},
-          ]
-        }}
-      />
-    );
-  }
-
   componentDidMount() {
     this.state.bounceValue.setValue(0.5);
     Animated.spring(
@@ -48,5 +32,21 @@ export default class NewMarker extends Component {
         friction: 1,
       }
     ).start();
+  }
+
+  render() {
+    return (
+      <Animated.Image
+        source={require('../../images/pin-add.png')}
+        style={{
+          height: 70,
+          width: 70,
+          opacity: 0.9,
+          transform: [
+            {scale: this.state.bounceValue},
+          ]
+        }}
+      />
+    );
   }
 }
