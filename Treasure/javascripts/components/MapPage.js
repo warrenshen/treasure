@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 
+import Requester from '../utils/requester';
 import CreateNoteModal from '../components/CreateNoteModal';
 import MainMap from '../components/MainMap';
 
@@ -33,11 +34,24 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: true });
   }
 
-  _handlePostNote = (navigator) => {
+  _handlePostNote = (noteText, navigator) => {
     this.setState({
       isPostingNote: false,
     });
-    navigator.pop();
+
+    const { postCoord } = this.state;
+
+    var params = {
+      note_text: noteText,
+      latitude: postCoord.latitude,
+      longitude: postCoord.longitude,
+    };
+
+    Requester.post(
+      'http://localhost:3000/geo_notes',
+      params,
+      (json) => navigator.pop()
+    );
   }
 
   _handleHideModal = () => {
@@ -131,7 +145,7 @@ class MapPage extends Component {
               <CreateNoteModal
                 isVisible={true}
                 onCancel={this._handleHideModal}
-                onPost={() => this._handlePostNote(navigator)}
+                onPost={(text) => this._handlePostNote(text, navigator)}
               />
             );
         }}}

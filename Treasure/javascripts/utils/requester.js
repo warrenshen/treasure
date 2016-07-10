@@ -13,7 +13,7 @@ export default {
         return json;
       }
     })
-    .then(json => json !== undefined && resolve(json));
+    .then(json => json !== undefined && typeof resolve === 'function' && resolve(json));
   },
   post: (route, params, resolve, reject) => {
     fetch(route, {
@@ -32,6 +32,6 @@ export default {
         return json;
       }
     })
-    .then(json => json !== undefined && resolve(json));
+    .then(json => json !== undefined && typeof resolve === 'function' && resolve(json));
   },
 };
