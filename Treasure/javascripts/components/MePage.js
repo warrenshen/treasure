@@ -22,7 +22,7 @@ class MePage extends Component {
         '2',
         '3',
       ]),
-      modalIsVisible: false,
+      modalIsVisible: false, // What is this for?
     };
   }
 
