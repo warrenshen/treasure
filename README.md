@@ -29,10 +29,10 @@ A note that is popular enough becomes Treasure. Treasure will be specially displ
 #### Push Notifications
 Each note has a range where it can result in a push notification, dependent on its own popularity and the note density (number of surrounding notes).
 
-## Features
+## Technologies
 
-<img src="http://cljsrn.org/img/react.svg" alt="Drawing" width="100px"/>
+<img src="http://cljsrn.org/img/react.svg" alt="Drawing" width="100px" vertical-align="middle"/>
 React Native
 
-<img src="https://achievement-images.teamtreehouse.com/badges_SimpleFacebook_Stage1.png" alt="Drawing" width="100px"/>
+<img src="https://achievement-images.teamtreehouse.com/badges_SimpleFacebook_Stage1.png" alt="Drawing" width="100px" vertical-align="middle"/>
 Ruby on Rails
