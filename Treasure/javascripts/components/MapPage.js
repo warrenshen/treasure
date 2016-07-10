@@ -1,5 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
+import update from 'react-addons-update';
 
 // UI
 import {
@@ -21,7 +22,18 @@ class MapPage extends Component {
     this.state = {
       modalIsVisible: false,
       isPostingNote: false,
+      markers: [],
     };
+  }
+
+  componentWillMount() {
+    Requester.get(
+      'http://localhost:3000/geo_notes', {},
+      geoNotes => {
+        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude));
+        this.setState({ markers: geoNotes });
+      }
+    );
   }
 
   _handleShowModal = () => {
@@ -45,6 +57,9 @@ class MapPage extends Component {
     Requester.post(
       'http://localhost:3000/geo_notes',
       params,
+      newNote => this.setState(update(this.state, {
+        markers: {$push: [newNote]},
+      }))
     );
   }
 
@@ -63,7 +78,7 @@ class MapPage extends Component {
   // Render
   // --------------------------------------------------
   render() {
-    const { isPostingNote, postCoordIsValid } = this.state;
+    const { isPostingNote, postCoordIsValid, markers } = this.state;
 
     let postNoteButtons;
     if (isPostingNote) {
@@ -124,6 +139,7 @@ class MapPage extends Component {
         renderScene={(route, navigator) => (
           <View style={styles.container}>
             <MainMap
+              markers={markers}
               isPostingNote={isPostingNote}
               updatePostCoord={this._updatePostCoord}
             />
