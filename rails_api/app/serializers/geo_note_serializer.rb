@@ -1,5 +1,6 @@
 class GeoNoteSerializer < ActiveModel::Serializer
   attributes :id,
              :latitude,
-             :longitude
+             :longitude,
+             :note_text
 end
