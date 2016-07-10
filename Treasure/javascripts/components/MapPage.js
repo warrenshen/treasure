@@ -9,6 +9,7 @@ import {
   Text,
   View,
   TouchableHighlight,
+  Image,
 } from 'react-native';
 
 import Requester from '../utils/requester';
@@ -224,7 +225,17 @@ class MapPage extends Component {
                     onPress={() => navigator.push(mapRoutes[1])}
                     style={styles.setNoteButton}>
                     <View style={styles.centerText}>
-                      <Text style={{color: '#333'}}>Set Note Here</Text>
+                      <Image
+                        source={require('../../images/mine.png')}
+                        style={{height: 35, width: 35, marginLeft: 15, marginRight: 15}}
+                      />
+                      <View style={{flex: 1}}>
+                        <Text style={{color: '#999', fontSize: 16}}>{'Set Note Here'}</Text>
+                      </View>
+                      <Image
+                        source={require('../../images/right.png')}
+                        style={{height: 40, width: 40}}
+                      />
                     </View>
                   </TouchableHighlight>
                 }
@@ -277,17 +288,27 @@ const styles = StyleSheet.create({
   },
   setNoteButton: {
     backgroundColor: 'white',
+    borderColor: '#999',
+    borderWidth: StyleSheet.hairlineWidth,
     position: 'absolute',
-    bottom: 78,
-    left: 30,
-    right: 30,
-    height: 50,
+    bottom: 73,
+    left: 25,
+    right: 25,
+    height: 70,
+    padding: 5,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowRadius: 2,
+    shadowOpacity: 1.0,
+    shadowOffset: {width: 0, height: 0},
+    shadowColor: '#999',
   },
   centerText: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
   },
 });
 
