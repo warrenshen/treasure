@@ -24,28 +24,51 @@ class GeoNotesController < ApplicationController
     render json: GeoNote.create(create_params)
   end
 
+  def popularity(geonote)
+    geonote.votes_for.up.size - geonote.votes_for.down.size
+  end
+
+  def is_treasure(geonote)
+    popularity(geonote) > 9
+  end
+
+  # The radius of a geonote increases on a logarithmic scale depending on popularity and whether it is treasure
+  def radius(geonote)
+    if is_treasure(geonote)
+      200 + 100 * Math.log(popularity(geonote))
+    else
+      200
+    end
+  end
+
   def in_bounds
-    bounds = params.permit(sw: [:latitude, :longitude], ne: [:latitude, :longitude])
-    render json: GeoNote.in_bounds([bounds[:sw].values, bounds[:ne].values]).all
+    user = params.permit(:latitude, :longitude)
+    center = Geokit::LatLng.new(user[:latitude], user[:longitude])
+    render json: GeoNote.all.select{|geonote| 
+      radius(geonote) > center.distance_to(Geokit::LatLng.new(geonote[:latitude], geonote[:longitude]), units: :meters)}
   end
 
   def upvote
     vote = params.permit(:id, :device_id)
     geonote = GeoNote.find(vote[:id])
+
     if User.where(device_id: vote[:device_id]).blank?
       User.create(device_id: vote[:device_id])
     end
+
     geonote.liked_by User.where(device_id: vote[:device_id]).take
-    render json: geonote.votes_for.up.size - geonote.votes_for.down.size
+    render json: popularity(geonote)
   end
 
   def downvote
     vote = params.permit(:id, :device_id)
     geonote = GeoNote.find(vote[:id])
+
     if User.where(device_id: vote[:device_id]).blank?
       User.create(device_id: vote[:device_id])
     end
+
     geonote.downvote_from User.where(device_id: vote[:device_id]).take
-    render json: geonote.votes_for.up.size - geonote.votes_for.down.size
+    render json: popularity(geonote)
   end
 end
