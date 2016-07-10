@@ -14,48 +14,73 @@ import {
   ScrollView,
 } from 'react-native';
 
+import Requester from '../utils/requester';
+
 class ViewNoteModal extends Component {
 
   // --------------------------------------------------
-  // Props
+  // Props and State
   // --------------------------------------------------
   static propTypes: {
     marker: PropTypes.object,
     onCancel: PropTypes.func.isRequired,
     isVisible: PropTypes.bool.isRequired,
+    noteId: PropTypes.number,
+    handleVote: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    noteId: 0,
+  };
+
+ constructor(props) {
+    super(props);
+    this.state = {
+      upVoted: false,
+      downVoted: false,
+    };
   }
 
   // --------------------------------------------------
-  // Render
+  // Handlers
   // --------------------------------------------------
-  // Messy cause onclick outside of modal should close it
-  // TODO: Scrollview to actually work
-  // TODO: Blur background
+  _onCancel = () => {
+    this.props.onCancel();
+    this.setState({
+      downVoted: false,
+      upVoted: false,
+    });
+  }
+
   render() {
     const {
       marker,
       onCancel,
       isVisible,
+      handleVote,
     } = this.props;
 
     let noteImageUrl;
     let noteText;
     let popularity;
+    let isUpvoted;
+    let isDownvoted;
     if (marker !== null) {
       noteImageUrl = marker.note_image_url;
       noteText = marker.note_text;
       popularity = marker.popularity;
+      isUpvoted = marker.upvoted;
+      isDownvoted = marker.downvoted;
     }
 
-    console.log(noteImageUrl);
     return (
       <Modal
         animationType={"slide"}
         transparent={true}
         visible={isVisible}
-        onRequestClose={onCancel}>
+        onRequestClose={this._onCancel}>
         <TouchableWithoutFeedback
-          onPress={onCancel}>
+          onPress={this._onCancel}>
           <View style={styles.container}>
             <TouchableWithoutFeedback>
               <View style={styles.modal}>
@@ -67,7 +92,7 @@ class ViewNoteModal extends Component {
                   </View>
                   <View style={styles.action}>
                     <TouchableWithoutFeedback
-                      onPress={onCancel}
+                      onPress={this._onCancel}
                       style={styles.button}>
                         <Image
                           source={require('../../images/x.png')}
@@ -97,24 +122,33 @@ class ViewNoteModal extends Component {
                     </Text>
                     <View style={styles.arrows}>
                       <TouchableWithoutFeedback
-                        onPress={onCancel}
+                        onPress={() => handleVote(true)}
                         style={styles.button}>
-                        <Image
+                        {isUpvoted ?
+                          <Image
+                          source={require('../../images/up-red.png')}
+                          style={styles.arrow}/>
+                          :
+                          <Image
                           source={require('../../images/up.png')}
-                          style={styles.arrow}
-                          onPress={onCancel}
-                      />
+                          style={styles.arrow}/>
+                        }
                     </TouchableWithoutFeedback>
                       <Text style={styles.upvoteCount}>
                         {popularity}
                       </Text>
                       <TouchableWithoutFeedback
-                        onPress={onCancel}
+                        onPress={() => handleVote(false)}
                         style={styles.button}>
-                        <Image
+                        {isDownvoted ?
+                          <Image
+                          source={require('../../images/down-red.png')}
+                          style={styles.arrow}/>
+                          :
+                          <Image
                           source={require('../../images/down.png')}
-                          style={styles.arrow}
-                        />
+                          style={styles.arrow}/>
+                        }
                     </TouchableWithoutFeedback>
                     </View>
                   </View>
