@@ -9,7 +9,7 @@ class GeoNotesController < ApplicationController
 
   def create
     render json: GeoNote.create(
-      params.permit(:latitude, :longitude, :phone_id, :note_text, :note_image)
+      params.require(:geo_note).permit(:latitude, :longitude, :phone_id, :note_text, :note_image)
     )
   end
 
