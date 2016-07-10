@@ -137,6 +137,17 @@ class MainMap extends Component {
               <Image source={require('../../images/pin.png')} style={styles.pin} />
             </MapView.Marker>
           ))}
+          {!isPostingNote &&
+            <MapView.Marker
+              coordinate={{
+                latitude: latitude,
+                longitude: longitude,
+              }}
+              key={`pirate_marker_${latitude}_${longitude}`}
+            >
+              <Image source={require('../../images/pirate-me.png')} style={styles.pirate} />
+            </MapView.Marker>
+          }
         </MapView>
         {isPostingNote &&
           <View style={styles.iconContainer} pointerEvents={'none'}>
@@ -176,6 +187,10 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     opacity: 0.8,
+  },
+  pirate: {
+    width: 60,
+    height: 60,
   }
 });
 
