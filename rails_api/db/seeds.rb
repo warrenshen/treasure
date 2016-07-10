@@ -30,12 +30,12 @@ puts "created 3 treasures in Menlo Park"
 
 (1...100).each do |id|
   user = User.create(device_id: id)
-  if Random.rand > 0.66
+  if Random.rand > 0.5
     treasure1.liked_by user
-  elsif Random.rand > 0.5
-    treasure2.liked_by user
-  else
-    treasure3.liked_by user
   end
+  if Random.rand > 0.25
+    treasure2.liked_by user
+  end
+  treasure3.liked_by user
 end
 puts "created 100 users"
