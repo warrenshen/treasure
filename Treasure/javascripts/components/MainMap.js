@@ -100,15 +100,21 @@ class MainMap extends Component {
     return (
       <View style={styles.container}>
         <MapView
-          followsUserLocation={true}
-          loadingEnabled={true}
-          mapType={'standard'}
-          initialRegion={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
-          }}
+        followsUserLocation={!isPostingNote}
+        loadingEnabled={true}
+        mapType={'standard'}
+        initialRegion={{
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
+        }}
+        showsBuildings={false}
+        showsTraffic={false}
+        showsUserLocation={!isPostingNote}
+        style={styles.map}
+        >
+          <MapView.Circle
             center={{
               latitude: latitude,
               longitude: longitude,
@@ -126,7 +132,7 @@ class MainMap extends Component {
               }}
               description={marker.note_text}
               onSelect={() => onMarkerPress(marker.note_text, marker.id)}
-              key={marker.id}>
+              key={marker.id}
             />
           ))}
         </MapView>
