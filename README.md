@@ -12,16 +12,16 @@ Place notes at your current location, and see other's notes in the same area (po
 
 ## Features
 
-# Posting Notes
+#### Posting Notes
 Anywhere you are, you can place a note at your exact coordinates. 
 
-# Viewing Notes
+#### Viewing Notes
 You can also view notes sorted by distance, popularity, and both. Notes can be viewed in map form.
 
-# Note Sorting
+#### Note Sorting
 Notes have an upvoting and flagging system.
 
-# Treasure
+#### Treasure
 A note that is popular enough becomes Treasure. Treasure will be specially sorted. Treasure creation and viewing should be special and visually pleasing.
 
 # Push Notifications
