@@ -7,3 +7,8 @@
   )
   puts "Created geo note with id #{new_geo_note.id}."
 end
+
+new_user = User.create(
+  device_id: "a"
+)
+puts "Created user with id 1."
