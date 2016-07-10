@@ -13,6 +13,11 @@ import {
 import CreateNoteModal from '../components/CreateNoteModal';
 import MainMap from '../components/MainMap';
 
+const routes = [
+  { index: 0, title: 'Treasure' },
+  { index: 1, title: 'Note' },
+];
+
 class MapPage extends Component {
 
   constructor(props) {
@@ -20,6 +25,7 @@ class MapPage extends Component {
     this.state = {
       modalIsVisible: false,
       isPostingNote: false,
+      postCoordIsValid: true,
     };
   }
 
@@ -27,11 +33,11 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: true });
   }
 
-  _handlePostNote = () => {
+  _handlePostNote = (navigator) => {
     this.setState({
       isPostingNote: false,
-      modalIsVisible: false
     });
+    navigator.pop();
   }
 
   _handleHideModal = () => {
@@ -45,77 +51,99 @@ class MapPage extends Component {
     });
   }
 
+  _postNoteHandler = (navigator) => {
+    const { isPostingNote } = this.state;
+    if (isPostingNote) {
+      navigator.push(routes[1]);
+    } else {
+      this.setState({ isPostingNote: !isPostingNote });
+    }
+  }
+
+  _updatePostCoord = (postCoord) => {
+    this.setState({ postCoord });
+  }
+
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
+  /*
+  <TouchableHighlight
+    onPress={() => this.setState({ isPostingNote: false })}
+    style={styles.button}
+    key={2}
+  >
+    <Text>Cancel</Text>
+  </TouchableHighlight>
+  */
   render() {
     const { isPostingNote, postCoordIsValid } = this.state;
-
-    let postNoteButtons;
-    if (isPostingNote) {
-      postNoteButtons = [(
-        <TouchableHighlight
-          onPress={() => this.setState({ modalIsVisible: true })}
-          style={styles.button}
-          disabled={!postCoordIsValid}
-          key={1}
-        >
-          <Text>
-            {postCoordIsValid ? 'Set Location' : 'Fuck you, user.'}
-          </Text>
-        </TouchableHighlight>
-      ), (
-        <TouchableHighlight
-          onPress={() => this.setState({ isPostingNote: false })}
-          style={styles.button}
-          key={2}
-        >
-          <Text>Cancel</Text>
-        </TouchableHighlight>
-      )]
-    } else {
-      postNoteButtons = (
-        <TouchableHighlight
-          onPress={() => this.setState({
-            isPostingNote: true,
-            postCoordIsValid: true,
-          })}
-          style={styles.button}
-        >
-          <Text>Post Note</Text>
-        </TouchableHighlight>
-      )
-    }
-
     return (
       <Navigator
-        initialRoute={{ index: 0, title: 'Explore' }}
+        initialRoute={routes[0]}
+        initialRoutes={routes}
         navigationBar={(
           <Navigator.NavigationBar
             routeMapper={{
               LeftButton: () => null,
-              RightButton: () => null,
+              RightButton: (route, navigator, index, navState) => {
+                let postNoteButtons;
+                if (isPostingNote) {
+                  postNoteButtons = (
+                    <TouchableHighlight
+                      onPress={() => navigator.push(routes[1])}
+                      style={styles.button}
+                      disabled={!postCoordIsValid}
+                      key={1}
+                    >
+                      <Text>
+                        {postCoordIsValid ? 'Set Location' : 'Fuck you, user.'}
+                      </Text>
+                    </TouchableHighlight>
+                  );
+                } else {
+                  postNoteButtons = (
+                    <TouchableHighlight
+                      onPress={() => {this.setState({
+                        isPostingNote: true,
+                        postCoordIsValid: true,
+                      });}}
+                      style={styles.button}
+                    >
+                      <Text>Post Note</Text>
+                    </TouchableHighlight>
+                  );
+                }
+                return (
+                  <View>{postNoteButtons}</View>
+                )
+              },
               Title: (route, navigator, index, navState) => (
-                <Text style={styles.text}>Treasure</Text>
+                <Text style={styles.text}>{route.title}</Text>
               ),
             }}
             style={styles.navbar}
           />
         )}
-        renderScene={(route, navigator) => (
-          <View style={styles.container}>
-            <MainMap
-              isPostingNote={isPostingNote}
-              updatePostCoord={this._updatePostCoord}
-            />
-            <CreateNoteModal
-              isVisible={this.state.modalIsVisible}
-              onCancel={this._handleHideModal}
-              onPost={this._handlePostNote}
-            />
-            {postNoteButtons}
-          </View>
-        )}
+        renderScene={(route, navigator) => {
+          if (route.index == 0) {
+            return (
+              <View style={styles.container}>
+                <MainMap
+                  isPostingNote={isPostingNote}
+                  updatePostCoord={this._updatePostCoord}
+                />
+              </View>
+            );
+          } else {
+            return (
+              <CreateNoteModal
+                isVisible={true}
+                onCancel={this._handleHideModal}
+                onPost={() => this._handlePostNote(navigator)}
+              />
+            );
+        }}}
       />
     );
   }
