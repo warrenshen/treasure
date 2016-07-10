@@ -30,8 +30,7 @@ class MapPage extends Component {
     this.state = {
       coordIsValid: true,
       viewNoteModalIsVisible: false,
-      currentMarkerDescription: "",
-      currentMarkerId: 0,
+      currentMarker: null,
       isPostingNote: false,
       markers: [],
       postContent: '',
@@ -68,13 +67,10 @@ class MapPage extends Component {
     // Renders the View Note Modal
     // TODO: pass in upvotes and shit
     // TODO: Add in the city or something
-    const {note_text, id, popularity} = marker;
 
     this.setState({
       viewNoteModalIsVisible: true,
-      currentMarkerDescription: note_text,
-      currentMarkerId: id,
-      currentMarkerPopularity: popularity,
+      currentMarker: marker,
     });
   }
 
@@ -135,9 +131,7 @@ class MapPage extends Component {
   render() {
     const {
       viewNoteModalIsVisible,
-      currentMarkerDescription,
-      currentMarkerPopularity,
-      currentMarkerId,
+      currentMarker,
       coordIsValid,
       isPostingNote,
       markers,
@@ -216,9 +210,7 @@ class MapPage extends Component {
                 <ViewNoteModal
                   isVisible={viewNoteModalIsVisible}
                   onCancel={this._handleHideViewModal}
-                  bodyText={currentMarkerDescription}
-                  popularity={currentMarkerPopularity}
-                  currentMarkerId={currentMarkerId}
+                  marker={currentMarker}
                 />
                 {isPostingNote &&
                   <TouchableHighlight
@@ -288,8 +280,6 @@ const styles = StyleSheet.create({
   },
   setNoteButton: {
     backgroundColor: 'white',
-    borderColor: '#999',
-    borderWidth: StyleSheet.hairlineWidth,
     position: 'absolute',
     bottom: 73,
     left: 25,
@@ -300,10 +290,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: '#999',
+    borderWidth: StyleSheet.hairlineWidth,
     shadowRadius: 2,
     shadowOpacity: 1.0,
     shadowOffset: {width: 0, height: 0},
-    shadowColor: '#999',
+    shadowColor: '#666',
   },
   centerText: {
     flex: 1,
