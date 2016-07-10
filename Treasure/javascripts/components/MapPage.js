@@ -4,6 +4,7 @@ import update from 'react-addons-update';
 
 // UI
 import {
+  Image,
   Navigator,
   StyleSheet,
   Text,
@@ -139,7 +140,10 @@ class MapPage extends Component {
                       });}}
                       style={styles.button}
                     >
-                      <Text>Post Note</Text>
+                      <Image
+                        source={require('../../images/write.png')}
+                        style={styles.image}
+                      />
                     </TouchableHighlight>
                   );
                 }
@@ -188,10 +192,13 @@ const styles = StyleSheet.create({
     paddingTop: 64,
   },
   button: {
-    backgroundColor: '#eeeeee',
-    padding: 10,
-    marginRight: 5,
-    marginLeft: 5,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    backgroundColor: 'transparent',
+  },
+  image: {
+    width: 30,
+    height: 30,
   },
   navbar: {
     justifyContent: 'center',
