@@ -131,9 +131,8 @@ class MainMap extends Component {
             latitude: parseFloat(marker.latitude),
             longitude: parseFloat(marker.longitude),
           }}
-          description={'Description'}
+          description={marker.note_text}
           key={marker.id}
-          title={'Test'}
         />
       ))}
       </MapView>

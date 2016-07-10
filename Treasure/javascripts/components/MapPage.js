@@ -30,7 +30,7 @@ class MapPage extends Component {
     Requester.get(
       'http://localhost:3000/geo_notes', {},
       geoNotes => {
-        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude));
+        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude && e.note_text));
         this.setState({ markers: geoNotes });
       }
     );
