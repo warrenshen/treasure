@@ -7,8 +7,6 @@ import {
   StatusBar,
   StyleSheet,
   TabBarIOS,
-  Text,
-  TouchableHighlight,
   View,
 } from 'react-native';
 
@@ -24,8 +22,6 @@ class Treasure extends Component {
     super(props);
     this.state = {
       selectedTab: 'home',
-      createNoteModalIsVisible: false,
-      isPostingNote: false,
     };
   }
 
