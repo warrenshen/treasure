@@ -1,4 +1,4 @@
-![alt tag](http://url/to/img.png)
+![alt tag](https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png)
 
 # Treasure
 
