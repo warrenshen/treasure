@@ -4,14 +4,15 @@ import React, { Component, PropTypes} from 'react';
 // UI
 import {
   AppRegistry,
+  Dimensions,
+  Image,
+  Modal,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  TouchableHighlight,
-  Modal,
   TextInput,
-  Image,
-  Dimensions,
+  TouchableHighlight,
+  View,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
@@ -37,7 +38,7 @@ class CreatePage extends Component {
       //   const source = {uri: response.uri, isStatic: true};
       // }
 
-      const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+      const source = { uri: 'data:image/jpeg;base64,' + response.data, isStatic: true };
       this.props.onImageChange(source);
     });
   }
@@ -52,26 +53,35 @@ class CreatePage extends Component {
       onContentChange,
     } = this.props;
     return (
-      <View style={styles.container}>
-        <TextInput
-          editable={true}
-          multiline={true}
-          onChangeText={onContentChange}
-          placeholder={'What you gotta say?'}
-          style={styles.input}
-          value={noteContent}
-        />
-        {noteImageSource !== undefined &&
-          <Image source={noteImageSource} style={styles.noteImage} />
-        }
-        <View style={styles.buttonContainer}>
-          <TouchableHighlight
-            onPress={this._openCamera}
-            style={styles.button}>
-            <Text style={{color: '#fff'}}>Add Photo</Text>
-          </TouchableHighlight>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardDismissMode={'on-drag'}
+        scrollEnabled={false}
+      >
+        <View style={styles.section}>
+          <TextInput
+            editable={true}
+            multiline={true}
+
+            onChangeText={onContentChange}
+            placeholder={'What you gotta say?'}
+            style={styles.input}
+            value={noteContent}
+          />
         </View>
-      </View>
+        <View style={styles.section}>
+          {noteImageSource !== undefined &&
+            <Image source={noteImageSource} style={styles.image} />
+          }
+          <View style={styles.footer}>
+            <TouchableHighlight
+              onPress={this._openCamera}
+              style={styles.touchable}>
+              <Text style={styles.button}>Add/Change Photo</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -80,9 +90,23 @@ class CreatePage extends Component {
 // Styles
 // --------------------------------------------------
 const styles = StyleSheet.create({
+  button: {
+    color: 'white',
+    fontFamily: 'JosefinSans-Bold',
+    fontSize: 16,
+  },
   container: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
     flex: 1,
     paddingTop: 64,
+  },
+  footer: {
+    height: 96,
+    paddingBottom: 48,
   },
   input: {
     flex: 1,
@@ -90,21 +114,18 @@ const styles = StyleSheet.create({
     color: '#333333',
     fontSize: 18,
   },
-  buttonContainer: {
+  image: {
+    flex: 1
+  },
+  section: {
+    flex: 1,
+  },
+  touchable: {
     flex: 1,
     justifyContent: 'center',
-    flexDirection: 'column',
     alignItems: 'center',
-  },
-  button: {
     backgroundColor: '#FF765F',
-    width: 100,
-    height: 100,
-    borderRadius: 50,
   },
-  noteImage: {
-    flex: 1
-  }
 });
 
 export default CreatePage;
