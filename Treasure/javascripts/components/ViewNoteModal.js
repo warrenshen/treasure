@@ -80,12 +80,17 @@ class ViewNoteModal extends Component {
                     {"Berkeley, California"}
                   </Text>
                   <View style={styles.arrows}>
-                    <Text style={styles.upArrow}>
-                      {"^"}
+                    <Image
+                      source={require('../../images/up.png')}
+                      style={styles.arrow}
+                    />
+                    <Text style={styles.upvoteCount}>
+                      {"3"}
                     </Text>
-                    <Text style={styles.downArrow}>
-                      {"v"}
-                    </Text>
+                    <Image
+                      source={require('../../images/down.png')}
+                      style={styles.arrow}
+                    />
                   </View>
                 </View>
               </View>
@@ -111,9 +116,9 @@ class ViewNoteModal extends Component {
     modal: {
       backgroundColor: 'white',
       paddingRight: 20,
+      paddingBottom: 5,
       paddingLeft: 20,
       paddingTop: 20,
-      paddingBottom: 20,
       height: 520,
       width: 340,
     },
@@ -133,6 +138,15 @@ class ViewNoteModal extends Component {
       fontSize: 20,
     },
 
+    arrows: {
+      alignItems: 'center',
+    },
+
+    arrow: {
+      width: 30,
+      height: 30,
+    },
+
     body: {
       fontSize: 18,
       // paddingLeft: 20,
@@ -141,6 +155,7 @@ class ViewNoteModal extends Component {
     city: {
       color: '#CCCCCC',
       fontSize: 18,
+      paddingBottom: 20,
     },
 
     footer: {
