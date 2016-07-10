@@ -1,5 +1,5 @@
 // Libraries
-import React, { Component } from 'react';
+import React, { Component, PropTypes} from 'react';
 
 // UI
 import {
@@ -13,6 +13,12 @@ import {
 } from 'react-native';
 
 class CreateNoteModal extends Component {
+
+  static propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onPost: PropTypes.func.isRequired,
+  }
 
   // --------------------------------------------------
   // State

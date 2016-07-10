@@ -69,6 +69,12 @@ class MainMap extends Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isPostingNote && nextProps.isPostingNote) {
+      this.props.updatePostCoord(this.state.markerCoord, true);
+    }
+  }
+
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }

@@ -35,13 +35,13 @@ class MapPage extends Component {
 
     var params = {
       note_text: this.state.text,
+      ...this.state.postCoord,
     };
-
-    // Requester.post(
-    //   'http://localhost:3000/geo_notes',
-    //   params,
-    //   (geoNotes) => console.log(geoNotes)
-    // );
+    debugger;
+    Requester.post(
+      'http://localhost:3000/geo_notes',
+      params,
+    );
 
   }
 
