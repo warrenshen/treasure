@@ -6,11 +6,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import Requester from '../helpers/requester';
+import Requester from '../utils/requester';
+import { meterDistance } from '../utils/geo.js';
 
 import MapView from 'react-native-maps';
 
-import { meterDistance } from '../utils/geo.js';
 
 class MainMap extends Component {
   static propTypes = {
