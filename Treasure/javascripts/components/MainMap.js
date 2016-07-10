@@ -89,7 +89,7 @@ class MainMap extends Component {
     const {
       isPostingNote,
       legalPostRadius,
-      markers
+      markers,
     } = this.props;
     return (
       <MapView

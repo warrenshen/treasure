@@ -11,7 +11,8 @@ import {
 } from 'react-native';
 
 import Requester from '../utils/requester';
-import CreateNoteModal from './CreateNoteModal';
+
+import CreatePage from './CreatePage';
 import MainMap from './MainMap';
 import NavbarButton from './NavbarButton'
 
@@ -28,6 +29,7 @@ class MapPage extends Component {
       coordIsValid: true,
       isPostingNote: false,
       markers: [],
+      postContent: '',
       postCoord: { latitude: 0, longitude: 0 },
     };
   }
@@ -44,19 +46,21 @@ class MapPage extends Component {
     );
   }
 
-  _handleShowModal = () => {
-    this.setState({ modalIsVisible: true });
+  _handlePostChange = (noteText) => {
+    this.setState({ postContent: noteText });
   }
 
-  _handlePostNote = (noteText, navigator) => {
-    this.setState({ isPostingNote: false });
-
-    const { postCoord } = this.state;
+  _handlePostNote = (navigator) => {
+    const {
+      postCoord,
+      postContent,
+    } = this.state;
     var params = {
-      note_text: noteText,
+      note_text: postContent,
       latitude: postCoord.latitude,
       longitude: postCoord.longitude,
     };
+    this.setState({ isPostingNote: false });
     Requester.post(
       'http://localhost:3000/geo_notes',
       params,
@@ -67,24 +71,11 @@ class MapPage extends Component {
     );
   }
 
-  _handleHideModal = () => {
-    this.setState({ modalIsVisible: false });
-  }
-
   _updatePostCoord = (postCoord, coordIsValid) => {
     this.setState({
       postCoord,
       coordIsValid,
     });
-  }
-
-  _postNoteHandler = (navigator) => {
-    const { isPostingNote } = this.state;
-    if (isPostingNote) {
-      navigator.push(mapRoutes[1]);
-    } else {
-      this.setState({ isPostingNote: !isPostingNote });
-    }
   }
 
   // --------------------------------------------------
@@ -95,6 +86,7 @@ class MapPage extends Component {
       coordIsValid,
       isPostingNote,
       markers,
+      postContent,
       postCoord,
     } = this.state;
     return (
@@ -113,21 +105,30 @@ class MapPage extends Component {
                 );
               },
               RightButton: (route, navigator, index, navState) => {
-                return isPostingNote ? (
-                  <NavbarButton
-                    disabled={!coordIsValid}
-                    imageSource={require('../../images/write.png')}
-                    onPress={() => navigator.push(mapRoutes[1])}
-                  />
-                ) : (
-                  <NavbarButton
-                    imageSource={require('../../images/write.png')}
-                    onPress={() => this.setState({
-                      coordIsValid: true,
-                      isPostingNote: true,
-                    })}
-                  />
-                );
+                if (index == 0) {
+                  return isPostingNote ? (
+                    <NavbarButton
+                      disabled={!coordIsValid}
+                      imageSource={require('../../images/write.png')}
+                      onPress={() => navigator.push(mapRoutes[1])}
+                    />
+                  ) : (
+                    <NavbarButton
+                      imageSource={require('../../images/write.png')}
+                      onPress={() => this.setState({
+                        coordIsValid: true,
+                        isPostingNote: true,
+                      })}
+                    />
+                  );
+                } else {
+                  return (
+                    <NavbarButton
+                      imageSource={require('../../images/write.png')}
+                      onPress={() => this._handlePostNote(navigator)}
+                    />
+                  );
+                }
               },
               Title: (route, navigator, index, navState) => (
                 <Text style={styles.text}>{route.title}</Text>
@@ -149,10 +150,9 @@ class MapPage extends Component {
             );
           } else {
             return (
-              <CreateNoteModal
-                isVisible={true}
-                onCancel={this._handleHideModal}
-                onPost={(text) => this._handlePostNote(text, navigator)}
+              <CreatePage
+                noteContent={postContent}
+                onContentChange={this._handlePostChange}
               />
             );
         }}}
