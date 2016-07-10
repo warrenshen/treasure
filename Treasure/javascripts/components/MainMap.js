@@ -106,8 +106,8 @@ class MainMap extends Component {
           initialRegion={{
             latitude: latitude,
             longitude: longitude,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
           }}
           showsBuildings={false}
           showsTraffic={false}
