@@ -4,7 +4,9 @@ class GeoNoteSerializer < ActiveModel::Serializer
              :longitude,
              :note_text,
              :popularity,
-             :note_image_url
+             :note_image_url,
+             :upvoted,
+             :downvoted
 
   def note_image_url
     object.note_image.url
@@ -12,5 +14,15 @@ class GeoNoteSerializer < ActiveModel::Serializer
 
   def popularity
     object.votes_for.up.size - object.votes_for.down.size
+  end
+
+  def upvoted
+    user = User.where(device_id: @instance_options[:device_id]).take
+    user.voted_up_on? object
+  end
+
+  def downvoted
+    user = User.where(device_id: @instance_options[:device_id]).take
+    user.voted_down_on? object
   end
 end

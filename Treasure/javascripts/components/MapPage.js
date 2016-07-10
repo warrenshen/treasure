@@ -79,6 +79,18 @@ class MapPage extends Component {
     this.setState({ viewNoteModalIsVisible: false });
   }
 
+  _handleVote = (up) => {
+    var params = {
+      id: this.state.currentMarker.id,
+    }
+    const endpoint = up ? 'upvote' : 'downvote';
+    Requester.post(
+      `http://localhost:3000/geo_notes/${endpoint}`,
+      params,
+      (marker) => this.setState({currentMarker: marker}),
+    );
+  }
+
   _handlePostNote = (navigator) => {
     const {
       postCoord,
@@ -200,6 +212,7 @@ class MapPage extends Component {
                 <ViewNoteModal
                   isVisible={viewNoteModalIsVisible}
                   onCancel={this._handleHideViewModal}
+                  handleVote={this._handleVote}
                   marker={currentMarker}
                 />
                 {isPostingNote &&

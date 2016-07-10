@@ -26,10 +26,11 @@ class ViewNoteModal extends Component {
     onCancel: PropTypes.func.isRequired,
     isVisible: PropTypes.bool.isRequired,
     noteId: PropTypes.number,
+    handleVote: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    noteId: 1,
+    noteId: 0,
   };
 
  constructor(props) {
@@ -43,16 +44,6 @@ class ViewNoteModal extends Component {
   // --------------------------------------------------
   // Handlers
   // --------------------------------------------------
-  _handleUpVote = () => {
-    var params = {
-      id: this.props.noteId,
-    }
-    Requester.post(
-      'http://localhost:3000/geo_notes/upvote',
-      params,
-      ()=>{this.setState({upVoted: true})},
-    );
-  }
 
   _handleDownVote = () => {
     var params = {
@@ -65,31 +56,6 @@ class ViewNoteModal extends Component {
     );
   }
 
-  // --------------------------------------------------
-  // Render
-  // --------------------------------------------------
-  // Messy cause onclick outside of modal should close it
-  // TODO: Scrollview to actually work
-  // TODO: Blur background
-  componentWillMount() {
-    var params = {
-      id: this.props.noteId,
-    }
-    console.log(params);
-
-    // Set the initial state here:
-    Requester.get(
-      'http://localhost:3000/geo_notes/upvoted',
-      params,
-      () => {},
-    );
-    Requester.get(
-      'http://localhost:3000/geo_notes/downvoted',
-      params,
-      () => {},
-    );
-  }
-
   _onCancel = () => {
     this.props.onCancel();
     this.setState({
@@ -98,24 +64,27 @@ class ViewNoteModal extends Component {
     });
   }
 
-
   render() {
     const {
       marker,
       onCancel,
       isVisible,
+      handleVote,
     } = this.props;
 
     let noteImageUrl;
     let noteText;
     let popularity;
+    let isUpvoted;
+    let isDownvoted;
     if (marker !== null) {
       noteImageUrl = marker.note_image_url;
       noteText = marker.note_text;
       popularity = marker.popularity;
+      isUpvoted = marker.upvoted;
+      isDownvoted = marker.downvoted;
     }
 
-    console.log(noteImageUrl);
     return (
       <Modal
         animationType={"slide"}
@@ -165,9 +134,9 @@ class ViewNoteModal extends Component {
                     </Text>
                     <View style={styles.arrows}>
                       <TouchableWithoutFeedback
-                        onPress={this._handleUpVote}
+                        onPress={() => handleVote(true)}
                         style={styles.button}>
-                        {this.state.upVoted == true ?
+                        {isUpvoted ?
                           <Image
                           source={require('../../images/up-red.png')}
                           style={styles.arrow}/>
@@ -181,10 +150,9 @@ class ViewNoteModal extends Component {
                         {popularity}
                       </Text>
                       <TouchableWithoutFeedback
-                        onPress={onCancel}
+                        onPress={() => handleVote(false)}
                         style={styles.button}>
-
-                        {this.state.downVoted == true ?
+                        {isDownvoted ?
                           <Image
                           source={require('../../images/down-red.png')}
                           style={styles.arrow}/>
