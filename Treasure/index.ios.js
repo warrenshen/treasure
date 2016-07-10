@@ -14,6 +14,7 @@ import {
 
 import MapPage from  './javascripts/components/MapPage';
 import MePage from './javascripts/components/MePage';
+import InfoPage from './javascripts/components/InfoPage';
 
 class Treasure extends Component {
 
@@ -73,7 +74,7 @@ class Treasure extends Component {
             selectedIcon={require('./images/info-red@2x.png')}
             title={'Info'}
           >
-            <MePage />
+            <InfoPage />
           </TabBarIOS.Item>
         </TabBarIOS>
       </View>
