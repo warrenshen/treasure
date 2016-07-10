@@ -38,10 +38,6 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: false });
   }
 
-  _unhideModal = () => {
-
-  }
-
   _updatePostCoord = (postCoord, postCoordIsValid) => {
     this.setState({
       postCoord,
