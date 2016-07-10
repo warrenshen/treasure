@@ -100,19 +100,20 @@ class MainMap extends Component {
     return (
       <View style={styles.container}>
         <MapView
-        followsUserLocation={!isPostingNote}
-        loadingEnabled={true}
-        mapType={'standard'}
-        initialRegion={{
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        }}
-        showsBuildings={false}
-        showsTraffic={false}
-        showsUserLocation={!isPostingNote}
-        style={styles.map}
+          followsUserLocation={!isPostingNote}
+          loadingEnabled={true}
+          mapType={'standard'}
+          initialRegion={{
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
+          }}
+          showsBuildings={false}
+          showsTraffic={false}
+          showsUserLocation={!isPostingNote}
+          style={styles.map}
+          onRegionChangeComplete={this._onMarkerDragEnd}
         >
           <MapView.Circle
             center={{
@@ -130,10 +131,11 @@ class MainMap extends Component {
                 latitude: parseFloat(marker.latitude),
                 longitude: parseFloat(marker.longitude),
               }}
-              description={marker.note_text}
               onSelect={() => onMarkerPress(marker.note_text, marker.id)}
               key={marker.id}
-            />
+            >
+              <Image source={require('../../images/pin.png')} style={styles.pin} />
+            </MapView.Marker>
           ))}
         </MapView>
         {isPostingNote &&
@@ -170,6 +172,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  pin: {
+    width: 60,
+    height: 60,
+    opacity: 0.8,
+  }
 });
 
 export default MainMap;
