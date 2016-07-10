@@ -137,7 +137,6 @@ class MapPage extends Component {
       postCoord,
     } = this.state;
     return (
-
       <Navigator
         initialRoute={mapRoutes[0]}
         initialRoutes={mapRoutes}
