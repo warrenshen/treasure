@@ -21,19 +21,24 @@ class MainMap extends Component {
     updatePostCoord: PropTypes.func.isRequired,
     onMarkerPress: PropTypes.func.isRequired,
     legalPostRadius: PropTypes.number.isRequired,
+    legalViewRadius: PropTypes.number.isRequired,
     markers: PropTypes.array.isRequired,
   };
 
   static defaultProps = {
-    legalPostRadius: 75, // meters
+    // Radii in meters
+    legalPostRadius: 50,
+    legalViewRadius: 500,
   };
 
   constructor(props) {
     super(props);
     this.state = {
+      isInitializing: true,
+      isPostingNote: false,
       latitude: 37.78825,
       longitude: -122.4324,
-      isPostingNote: false,
+      markerCoord: {},
     };
     this.watchID = null;
   }
@@ -42,26 +47,16 @@ class MainMap extends Component {
   // Render
   // --------------------------------------------------
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (response) => {
-        const coords = response.coords;
-        this.setState({
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          markerCoord: coords,
-        });
-      },
-      (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
     this.watchID = navigator.geolocation.watchPosition(
       (response) => {
         const coords = response.coords;
         this.setState({
+          isInitializing: false,
           latitude: coords.latitude,
           longitude: coords.longitude,
         });
-      }
+      },
+      (error) => alert(error.message)
     );
   }
 
@@ -84,9 +79,7 @@ class MainMap extends Component {
     this.props.updatePostCoord(region, postDistance < this.props.legalPostRadius);
   }
 
-  // TODO: Turn off the preview onpress for Marker
-
-  render() {
+  renderCircle() {
     const {
       latitude,
       longitude,
@@ -94,66 +87,98 @@ class MainMap extends Component {
     const {
       isPostingNote,
       legalPostRadius,
+      legalViewRadius,
+    } = this.props;
+    return (
+      <MapView.Circle
+        center={{
+          latitude: latitude,
+          longitude: longitude,
+        }}
+        fillColor={!isPostingNote ? '#0591FF33' : 'red'}
+        key={`circle_${latitude}_${longitude}`}
+        radius={!isPostingNote ? legalViewRadius : legalPostRadius}
+        strokeColor={'#66666666'}
+      />
+    );
+  }
+
+  renderMarkers() {
+    const {
+      latitude,
+      longitude,
+    } = this.state;
+    const {
+      legalViewRadius,
       markers,
       onMarkerPress,
     } = this.props;
+    return markers.map(marker => {
+      const markerLongitude = parseFloat(marker.longitude);
+      const markerLatitude = parseFloat(marker.latitude);
+      const markerDistance = meterDistance(
+        {
+          longitude: markerLongitude,
+          latitude: markerLatitude,
+        },
+        {
+          longitude: longitude,
+          latitude: latitude,
+        }
+      );
+      if (markerDistance < legalViewRadius) {
+        return (
+          <MapView.Marker
+            coordinate={{
+              longitude: markerLongitude,
+              latitude: markerLatitude,
+            }}
+            key={marker.id}
+            onSelect={() => onMarkerPress(marker)}
+          >
+            <Image source={require('../../images/pin.png')} style={styles.pin} />
+          </MapView.Marker>
+        );
+      }
+    });
+  }
+
+  render() {
+    const {
+      isInitializing,
+      isPostingNote,
+      latitude,
+      longitude,
+    } = this.state;
     return (
       <View style={styles.container}>
-        <MapView
-          followsUserLocation={!isPostingNote}
-          loadingEnabled={true}
-          mapType={'standard'}
-          initialRegion={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
-          showsBuildings={false}
-          showsTraffic={false}
-          showsUserLocation={!isPostingNote}
-          style={styles.map}
-          onRegionChangeComplete={this._onMarkerDragEnd}
-        >
-          <MapView.Circle
-            center={{
+        {!isInitializing && (
+          <MapView
+            followsUserLocation={!isPostingNote}
+            loadingEnabled={true}
+            mapType={'standard'}
+            onRegionChangeComplete={this._onMarkerDragEnd}
+            region={{
               latitude: latitude,
               longitude: longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
             }}
-            key={`circle_${latitude}_${longitude}`}
-            radius={legalPostRadius}
-            fillColor={'#0591FF33'}
-            strokeColor={'#66666666'}
-          />
-          {markers.map(marker => (
-            <MapView.Marker
-              coordinate={{
-                latitude: parseFloat(marker.latitude),
-                longitude: parseFloat(marker.longitude),
-              }}
-              onSelect={() => onMarkerPress(marker)}
-              key={marker.id}
-            >
-              <Image source={require('../../images/pin.png')} style={styles.pin} />
-            </MapView.Marker>
-          ))}
-          {!isPostingNote &&
-            <MapView.Marker
-              coordinate={{
-                latitude: latitude,
-                longitude: longitude,
-              }}
-              key={`pirate_marker_${latitude}_${longitude}`}
-            >
-              <Image source={require('../../images/pirate-me.png')} style={styles.pirate} />
-            </MapView.Marker>
-          }
-        </MapView>
-        {isPostingNote &&
-          <View style={styles.iconContainer} pointerEvents={'none'}>
-            <NewMarker />
-          </View>
-        }
+            showsBuildings={false}
+            showsTraffic={false}
+            showsUserLocation={!isPostingNote}
+            style={styles.map}
+          >
+            {this.renderCircle()}
+            {this.renderMarkers()}
+
+            {isPostingNote &&
+              <View style={styles.iconContainer} pointerEvents={'none'}>
+                <NewMarker />
+              </View>
+            }
+          </MapView>
+        )}
       </View>
     );
   }
