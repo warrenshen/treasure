@@ -66,7 +66,6 @@ class MapPage extends Component {
       latitude: postCoord.latitude,
       longitude: postCoord.longitude,
     };
-    debugger;
     if (postImageSource) {
       params.note_image = postImageSource.uri;
     }
