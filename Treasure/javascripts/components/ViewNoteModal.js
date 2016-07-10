@@ -147,6 +147,11 @@ class ViewNoteModal extends Component {
       height: 30,
     },
 
+    upvoteCount: {
+      color: '#999999',
+      fontSize: 15,
+    },
+
     body: {
       fontSize: 18,
       // paddingLeft: 20,
