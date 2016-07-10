@@ -29,6 +29,8 @@ class MapPage extends Component {
     this.state = {
       coordIsValid: true,
       viewNoteModalIsVisible: false,
+      currentMarkerDescription: "",
+      currentMarkerId: 0,
       isPostingNote: false,
       markers: [],
       postContent: '',
@@ -50,6 +52,10 @@ class MapPage extends Component {
 
   _handlePostChange = (noteText) => {
     this.setState({ postContent: noteText });
+  }
+
+  _handleHideCreateModal = () => {
+    this.setState({ createNoteModalIsVisible: false });
   }
 
   _handleShowViewNoteModal = (description, id) => {
