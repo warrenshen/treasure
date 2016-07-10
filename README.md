@@ -4,7 +4,7 @@
 
 ###### Find hidden gems everywhere!
 
-![image](https://github.com/warrenshen/treasure/blob/master/mocks/0home.png)
+<img src="https://github.com/warrenshen/treasure/blob/master/mocks/0home.png" alt="Drawing" width="375px"/>
 
 ## Summary
 
