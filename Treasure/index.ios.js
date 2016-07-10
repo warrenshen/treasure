@@ -62,6 +62,14 @@ class Treasure extends Component {
           >
             <MePage />
           </TabBarIOS.Item>
+          <TabBarIOS.Item
+            onPress={() => this.setState({ selectedTab: 'info' })}
+            selected={this.state.selectedTab === 'info'}
+            systemIcon={'search'}
+            title={'Info'}
+          >
+            <MePage />
+          </TabBarIOS.Item>
         </TabBarIOS>
       </View>
     );
