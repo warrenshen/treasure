@@ -66,6 +66,7 @@ class MapPage extends Component {
       params,
       (newNote) => {
         this.setState(update(this.state, { markers: { $push: [newNote] } }));
+        this.setState({ postContent: '' });
         navigator.pop();
       }
     );
@@ -97,15 +98,30 @@ class MapPage extends Component {
           <Navigator.NavigationBar
             routeMapper={{
               LeftButton: (route, navigator, index, navState) => {
-                return isPostingNote && (
-                  <NavbarButton
-                    textContent={'Cancel'}
-                    onPress={() => this.setState({ isPostingNote: false })}
-                  />
-                );
+                if (index === 0) {
+                  return isPostingNote && (
+                    <NavbarButton
+                      textContent={'Cancel'}
+                      onPress={() => this.setState({ isPostingNote: false })}
+                    />
+                  );
+                } else {
+                  return (
+                    <NavbarButton
+                      textContent={'Cancel'}
+                      onPress={() => {
+                        this.setState({
+                          isPostingNote: false,
+                          postContent: '',
+                        });
+                        navigator.pop();
+                      }}
+                    />
+                  );
+                }
               },
               RightButton: (route, navigator, index, navState) => {
-                if (index == 0) {
+                if (index === 0) {
                   return isPostingNote ? (
                     <NavbarButton
                       disabled={!coordIsValid}
