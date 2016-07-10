@@ -14,7 +14,6 @@ class GeoNotesController < ApplicationController
                     .require(:geo_note)
                     .permit(:latitude, :longitude, :phone_id, :note_text, :note_image)
 
-    binding.pry
     # HACK: use the raw params because for some reason permit filters out the base64.
     # probably because it's way too big but yolo
     if params[:note_image].present?
