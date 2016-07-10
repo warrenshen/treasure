@@ -11,6 +11,7 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Image,
+  ScrollView,
 } from 'react-native';
 
 class ViewNoteModal extends Component {
@@ -70,29 +71,34 @@ class ViewNoteModal extends Component {
                     </TouchableWithoutFeedback>
                   </View>
                 </View>
-                <View style={styles.bodyContainer}>
-                  <Text style={styles.body}>
-                    {bodyText}
-                  </Text>
-                </View>
-                <View style={styles.footer}>
-                  <Text style={styles.city}>
-                    {"Berkeley, California"}
-                  </Text>
-                  <View style={styles.arrows}>
-                    <Image
-                      source={require('../../images/up.png')}
-                      style={styles.arrow}
-                    />
-                    <Text style={styles.upvoteCount}>
-                      {"3"}
+                <ScrollView
+                  contentContainerStyle={styles.scrollView}
+                  keyboardDismissMode={'on-drag'}
+                  scrollEnabled={true}>
+                  <View style={styles.bodyContainer}>
+                    <Text style={styles.body}>
+                      {bodyText}
                     </Text>
-                    <Image
-                      source={require('../../images/down.png')}
-                      style={styles.arrow}
-                    />
                   </View>
-                </View>
+                  <View style={styles.footer}>
+                    <Text style={styles.city}>
+                      {"Berkeley, California"}
+                    </Text>
+                    <View style={styles.arrows}>
+                      <Image
+                        source={require('../../images/up.png')}
+                        style={styles.arrow}
+                      />
+                      <Text style={styles.upvoteCount}>
+                        {"3"}
+                      </Text>
+                      <Image
+                        source={require('../../images/down.png')}
+                        style={styles.arrow}
+                      />
+                    </View>
+                  </View>
+                </ScrollView>
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -112,6 +118,14 @@ class ViewNoteModal extends Component {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    scrollView: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      left: 0,
+      bottom: 0,
+      flex: 1,
     },
     modal: {
       backgroundColor: 'white',
@@ -153,7 +167,7 @@ class ViewNoteModal extends Component {
     },
 
     body: {
-      fontSize: 18,
+      fontSize: 180,
       // paddingLeft: 20,
     },
 
