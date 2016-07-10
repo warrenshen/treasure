@@ -21,6 +21,7 @@ class ViewNoteModal extends Component {
   // --------------------------------------------------
   static propTypes: {
     bodyText: PropTypes.string,
+    popularity: PropTypes.number,
     onCancel: PropTypes.func.isRequired,
     isVisible: PropTypes.bool.isRequired,
   }
@@ -33,7 +34,7 @@ class ViewNoteModal extends Component {
   // Render
   // --------------------------------------------------
   // Messy cause onclick outside of modal should close it
-  // TODO: Scrollview
+  // TODO: Scrollview to actually work
   // TODO: Blur background
   render() {
     const {
@@ -41,6 +42,7 @@ class ViewNoteModal extends Component {
       onCancel,
       isVisible,
       currentMarkerId,
+      popularity,
     } = this.props;
 
     return (
@@ -57,7 +59,7 @@ class ViewNoteModal extends Component {
                 <View style={styles.header}>
                   <View style={styles.title}>
                     <Text style={styles.titleText}>
-                      {"Title"}
+                      {"Note"}
                     </Text>
                   </View>
                   <View style={styles.action}>
@@ -85,17 +87,26 @@ class ViewNoteModal extends Component {
                       {"Berkeley, California"}
                     </Text>
                     <View style={styles.arrows}>
-                      <Image
-                        source={require('../../images/up.png')}
-                        style={styles.arrow}
+                      <TouchableWithoutFeedback
+                        onPress={onCancel}
+                        style={styles.button}>
+                        <Image
+                          source={require('../../images/up.png')}
+                          style={styles.arrow}
+                          onPress={onCancel}
                       />
+                    </TouchableWithoutFeedback>
                       <Text style={styles.upvoteCount}>
-                        {"3"}
+                        {popularity}
                       </Text>
-                      <Image
-                        source={require('../../images/down.png')}
-                        style={styles.arrow}
-                      />
+                      <TouchableWithoutFeedback
+                        onPress={onCancel}
+                        style={styles.button}>
+                        <Image
+                          source={require('../../images/down.png')}
+                          style={styles.arrow}
+                        />
+                    </TouchableWithoutFeedback>
                     </View>
                   </View>
                 </ScrollView>

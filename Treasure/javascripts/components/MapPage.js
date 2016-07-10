@@ -62,7 +62,7 @@ class MapPage extends Component {
     this.setState({ createNoteModalIsVisible: false });
   }
 
-  _handleShowViewNoteModal = (description, id) => {
+  _handleShowViewNoteModal = (description, id, popularity) => {
     // Renders the View Note Modal
     // TODO: pass in upvotes and shit
     // TODO: Add in the city or something
@@ -71,6 +71,7 @@ class MapPage extends Component {
       viewNoteModalIsVisible: true,
       currentMarkerDescription: description,
       currentMarkerId: id,
+      currentMarkerPopularity: popularity,
     });
   }
 

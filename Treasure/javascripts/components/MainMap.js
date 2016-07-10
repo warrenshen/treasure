@@ -135,7 +135,7 @@ class MainMap extends Component {
             latitude: parseFloat(marker.latitude),
             longitude: parseFloat(marker.longitude),
           }}
-          onSelect={() => onMarkerPress(marker.note_text, marker.id)}
+          onSelect={() => onMarkerPress(marker.note_text, marker.id, marker.popularity)}
           key={marker.id}>
         </MapView.Marker>
       ))}

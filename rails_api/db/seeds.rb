@@ -12,3 +12,5 @@ new_user = User.create(
   device_id: "a"
 )
 puts "Created user with id 1."
+
+
