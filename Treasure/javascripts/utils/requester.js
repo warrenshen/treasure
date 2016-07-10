@@ -13,9 +13,10 @@ export default {
         return json;
       }
     })
-    .then(json => json !== undefined && resolve(json));
+    .then(json => json !== undefined && typeof resolve === 'function' && resolve(json));
   },
   post: (route, params, resolve, reject) => {
+    params.merge(
     fetch(route, {
       body: JSON.stringify(params),
       cache: 'default',
@@ -32,6 +33,6 @@ export default {
         return json;
       }
     })
-    .then(json => json !== undefined && resolve(json));
+    .then(json => json !== undefined && typeof resolve === 'function' && resolve(json));
   },
 };

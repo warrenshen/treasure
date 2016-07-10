@@ -53,7 +53,7 @@ class CreateNoteModal extends Component {
           </Text>
           <View style={styles.action}>
             <TouchableHighlight
-              onPress={this.props.onPost}
+              onPress={() => this.props.onPost(this.state.text)}
               style={styles.button}>
               <Text style={styles.actionText}>Post</Text>
             </TouchableHighlight>
