@@ -93,7 +93,7 @@ class MainMap extends Component {
       isPostingNote,
       legalPostRadius,
       markers,
-      onMarkerPress
+      onMarkerPress,
     } = this.props;
     return (
       <MapView
@@ -137,7 +137,7 @@ class MainMap extends Component {
           }}
           onSelect={() => onMarkerPress(marker.note_text, marker.id)}
           key={marker.id}>
-          </MapView.Marker>
+        </MapView.Marker>
       ))}
       </MapView>
     );
