@@ -3,8 +3,13 @@ class GeoNoteSerializer < ActiveModel::Serializer
              :latitude,
              :longitude,
              :note_text,
-             :popularity
-  
+             :popularity,
+             :note_image_url
+
+  def note_image_url
+    object.note_image.url
+  end
+
   def popularity
     object.votes_for.up.size - object.votes_for.down.size
   end
