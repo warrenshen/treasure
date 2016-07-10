@@ -15,7 +15,7 @@ import Requester from '../utils/requester';
 import CreateNoteModal from '../components/CreateNoteModal';
 import MainMap from '../components/MainMap';
 
-const routes = [
+const mapRoutes = [
   { index: 0, title: 'Treasure' },
   { index: 1, title: 'Note' },
 ];
@@ -25,18 +25,20 @@ class MapPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalIsVisible: false,
+      coordIsValid: true,
       isPostingNote: false,
-      postCoordIsValid: true,
       markers: [],
+      postCoord: { latitude: 0, longitude: 0 },
     };
   }
 
   componentWillMount() {
     Requester.get(
       'http://localhost:3000/geo_notes', {},
-      geoNotes => {
-        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude && e.note_text));
+      (geoNotes) => {
+        geoNotes = geoNotes.filter((e) => e.latitude &&
+                                          e.longitude &&
+                                          e.note_text);
         this.setState({ markers: geoNotes });
       }
     );
@@ -47,9 +49,7 @@ class MapPage extends Component {
   }
 
   _handlePostNote = (noteText, navigator) => {
-    this.setState({
-      isPostingNote: false,
-    });
+    this.setState({ isPostingNote: false });
 
     const { postCoord } = this.state;
     var params = {
@@ -61,10 +61,8 @@ class MapPage extends Component {
       'http://localhost:3000/geo_notes',
       params,
       (newNote) => {
-        this.setState(update(this.state, {
-          markers: {$push: [newNote]},
-        }));
-        navigator.pop()
+        this.setState(update(this.state, { markers: { $push: [newNote] } }));
+        navigator.pop();
       }
     );
   }
@@ -73,51 +71,62 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: false });
   }
 
-  _updatePostCoord = (postCoord, postCoordIsValid) => {
+  _updatePostCoord = (postCoord, coordIsValid) => {
     this.setState({
       postCoord,
-      postCoordIsValid,
+      coordIsValid,
     });
   }
 
   _postNoteHandler = (navigator) => {
     const { isPostingNote } = this.state;
     if (isPostingNote) {
-      navigator.push(routes[1]);
+      navigator.push(mapRoutes[1]);
     } else {
       this.setState({ isPostingNote: !isPostingNote });
     }
-  }
-
-  _updatePostCoord = (postCoord) => {
-    this.setState({ postCoord });
   }
 
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
   render() {
-    const { isPostingNote, postCoordIsValid, markers } = this.state;
+    const {
+      coordIsValid,
+      isPostingNote,
+      markers,
+      postCoord,
+    } = this.state;
     return (
       <Navigator
-        initialRoute={routes[0]}
-        initialRoutes={routes}
+        initialRoute={mapRoutes[0]}
+        initialRoutes={mapRoutes}
         navigationBar={(
           <Navigator.NavigationBar
             routeMapper={{
-              LeftButton: () => null,
+              LeftButton: (route, navigator, index, navState) => {
+                if (isPostingNote) {
+                  return (
+                    <TouchableHighlight
+                      onPress={() => this.setState({ isPostingNote: false })}
+                      style={styles.button}
+                    >
+                      <Text>Cancel</Text>
+                    </TouchableHighlight>
+                  );
+                }
+              },
               RightButton: (route, navigator, index, navState) => {
                 let postNoteButtons;
                 if (isPostingNote) {
                   postNoteButtons = (
                     <TouchableHighlight
-                      onPress={() => navigator.push(routes[1])}
+                      disabled={!coordIsValid}
+                      onPress={() => navigator.push(mapRoutes[1])}
                       style={styles.button}
-                      disabled={!postCoordIsValid}
-                      key={1}
                     >
                       <Text>
-                        {postCoordIsValid ? 'Set Location' : 'Fuck you, user.'}
+                        {coordIsValid ? 'Set Location' : 'Fuck you, user.'}
                       </Text>
                     </TouchableHighlight>
                   );
@@ -125,8 +134,8 @@ class MapPage extends Component {
                   postNoteButtons = (
                     <TouchableHighlight
                       onPress={() => {this.setState({
+                        coordIsValid: true,
                         isPostingNote: true,
-                        postCoordIsValid: true,
                       });}}
                       style={styles.button}
                     >
@@ -150,8 +159,8 @@ class MapPage extends Component {
             return (
               <View style={styles.container}>
                 <MainMap
-                  markers={markers}
                   isPostingNote={isPostingNote}
+                  markers={markers}
                   updatePostCoord={this._updatePostCoord}
                 />
               </View>
