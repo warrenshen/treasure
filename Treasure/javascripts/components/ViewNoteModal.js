@@ -20,15 +20,10 @@ class ViewNoteModal extends Component {
   // Props
   // --------------------------------------------------
   static propTypes: {
-    bodyText: PropTypes.string,
-    popularity: PropTypes.number,
+    marker: PropTypes.object,
     onCancel: PropTypes.func.isRequired,
     isVisible: PropTypes.bool.isRequired,
   }
-
-  // --------------------------------------------------
-  // State
-  // --------------------------------------------------
 
   // --------------------------------------------------
   // Render
@@ -38,13 +33,21 @@ class ViewNoteModal extends Component {
   // TODO: Blur background
   render() {
     const {
-      bodyText,
+      marker,
       onCancel,
       isVisible,
-      currentMarkerId,
-      popularity,
     } = this.props;
 
+    let noteImageUrl;
+    let noteText;
+    let popularity;
+    if (marker !== null) {
+      noteImageUrl = marker.note_image_url;
+      noteText = marker.note_text;
+      popularity = marker.popularity;
+    }
+
+    console.log(noteImageUrl);
     return (
       <Modal
         animationType={"slide"}
@@ -77,9 +80,15 @@ class ViewNoteModal extends Component {
                   contentContainerStyle={styles.scrollView}
                   keyboardDismissMode={'on-drag'}
                   scrollEnabled={true}>
+                  {noteImageUrl &&
+                    <Image
+                      source={{uri: `http://localhost:3000${noteImageUrl}`}}
+                      style={styles.image}
+                    />
+                  }
                   <View style={styles.bodyContainer}>
                     <Text style={styles.body}>
-                      {bodyText}
+                      {noteText}
                     </Text>
                   </View>
                   <View style={styles.footer}>
@@ -119,89 +128,111 @@ class ViewNoteModal extends Component {
   }
 }
 
-  // --------------------------------------------------
-  // Styles
-  // --------------------------------------------------
+// --------------------------------------------------
+// Styles
+// --------------------------------------------------
 
-  //TODO: Padding or Margin?
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    scrollView: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      left: 0,
-      bottom: 0,
-      flex: 1,
-    },
-    modal: {
-      backgroundColor: 'white',
-      paddingRight: 20,
-      paddingBottom: 5,
-      paddingLeft: 20,
-      paddingTop: 20,
-      height: 520,
-      width: 340,
-    },
+//TODO: Padding or Margin?
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scrollView: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    flex: 1,
+  },
+  modal: {
+    backgroundColor: 'white',
+    paddingBottom: 5,
+    paddingTop: 20,
+    height: 520,
+    width: 340,
 
-    cancel: {
-      width: 30,
-      height: 30,
-    },
+    borderColor: '#999',
+    borderWidth: StyleSheet.hairlineWidth,
+    shadowRadius: 2,
+    shadowOpacity: 1.0,
+    shadowOffset: {width: 0, height: 0},
+    shadowColor: '#888',
+  },
 
-    button: {
-      marginRight: 5,
-      marginLeft: 5,
-    },
+  cancel: {
+    width: 30,
+    height: 30,
+  },
 
-    titleText: {
-      fontFamily: 'JosefinSans-Bold',
-      fontSize: 20,
-    },
+  button: {
+    marginRight: 5,
+    marginLeft: 5,
+  },
 
-    arrows: {
-      alignItems: 'center',
-    },
+  titleText: {
+    fontFamily: 'JosefinSans-Bold',
+    fontSize: 24,
+    color: '#333',
+    paddingTop: 5,
+  },
 
-    arrow: {
-      width: 30,
-      height: 30,
-    },
+  arrows: {
+    alignItems: 'center',
+  },
 
-    upvoteCount: {
-      color: '#999999',
-      fontSize: 15,
-    },
+  arrow: {
+    width: 30,
+    height: 30,
+  },
 
-    body: {
-      fontSize: 18,
-      // paddingLeft: 20,
-    },
+  upvoteCount: {
+    color: '#999999',
+    fontSize: 15,
+  },
 
-    city: {
-      color: '#CCCCCC',
-      fontSize: 18,
-      paddingBottom: 20,
-    },
+  body: {
+    color: '#666',
+    fontSize: 18,
+    lineHeight: 26,
+  },
 
-    footer: {
-      flex:1,
-      flexDirection: 'row',
-      alignItems: 'flex-end',
-      justifyContent: 'space-between',
-    },
+  city: {
+    color: '#CCCCCC',
+    fontSize: 18,
+    paddingBottom: 20,
+  },
 
-    header: {
-      paddingTop: 10,
-      paddingBottom: 10,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-  });
+  footer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    paddingRight: 20,
+    paddingLeft: 20,
+  },
+
+  header: {
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  image: {
+    flex: 1,
+    marginBottom: 20,
+    minHeight: 180,
+  },
+
+  bodyContainer: {
+    paddingRight: 20,
+    paddingLeft: 20,
+  },
+});
 
 export default ViewNoteModal;
