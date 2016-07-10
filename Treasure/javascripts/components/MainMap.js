@@ -34,7 +34,10 @@ class MainMap extends Component {
     Requester.get(
       'http://localhost:3000/geo_notes',
       {},
-      (geoNotes) => this.setState({ markers: geoNotes })
+      (geoNotes) => {
+        geoNotes = geoNotes.filter((e) => (e.latitude && e.longitude));
+        this.setState({ markers: geoNotes });
+      }
     );
     navigator.geolocation.getCurrentPosition(
       (response) => {

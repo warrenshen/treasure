@@ -30,8 +30,19 @@ class MapPage extends Component {
   _handlePostNote = () => {
     this.setState({
       isPostingNote: false,
-      modalIsVisible: false
+      modalIsVisible: false,
     });
+
+    // var params = {
+    //   note_text: this.state.text,
+    // };
+
+    // Requester.post(
+    //   'http://localhost:3000/geo_notes',
+    //   params,
+    //   (geoNotes) => console.log(geoNotes)
+    // );
+
   }
 
   _handleHideModal = () => {
