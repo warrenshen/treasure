@@ -12,9 +12,11 @@ import {
   Text,
   TextInput,
   TouchableHighlight,
+  DeviceEventEmitter,
   View,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import KeyboardSpacer from './KeyboardSpacer.js';
 
 class CreatePage extends Component {
 
@@ -23,6 +25,13 @@ class CreatePage extends Component {
     noteImageSource: PropTypes.object,
     onContentChange: PropTypes.func.isRequired,
     onImageChange: PropTypes.func.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      keyboardBottom: 0,
+    };
   }
 
   _openCamera = () => {
@@ -52,36 +61,41 @@ class CreatePage extends Component {
       noteImageSource,
       onContentChange,
     } = this.props;
-    return (
-      <ScrollView
-        contentContainerStyle={styles.container}
-        keyboardDismissMode={'on-drag'}
-        scrollEnabled={false}
-      >
-        <View style={styles.section}>
-          <TextInput
-            editable={true}
-            multiline={true}
 
-            onChangeText={onContentChange}
-            placeholder={'What you gotta say?'}
-            style={styles.input}
-            value={noteContent}
-          />
-        </View>
-        <View style={styles.section}>
-          {noteImageSource !== undefined &&
-            <Image source={noteImageSource} style={styles.image} />
-          }
-          <View style={styles.footer}>
-            <TouchableHighlight
-              onPress={this._openCamera}
-              style={styles.touchable}>
-              <Text style={styles.button}>Add/Change Photo</Text>
-            </TouchableHighlight>
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={{flex: 1}}
+          keyboardDismissMode={'on-drag'}
+          scrollEnabled={false}
+          styles={{height: this.state.visibleHeight}}
+        >
+          <View style={styles.section}>
+            <TextInput
+              editable={true}
+              multiline={true}
+
+              onChangeText={onContentChange}
+              placeholder={'What you gotta say?'}
+              style={styles.input}
+              value={noteContent}
+            />
           </View>
-        </View>
-      </ScrollView>
+          <View style={styles.section}>
+            {noteImageSource !== undefined &&
+              <Image source={noteImageSource} style={styles.image} />
+            }
+            <View style={styles.footer}>
+              <TouchableHighlight
+                onPress={this._openCamera}
+                style={styles.touchable}>
+                <Text style={styles.button}>Add/Change Photo</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </ScrollView>
+        <KeyboardSpacer bottomSpacing={48} />
+      </View>
     );
   }
 }
@@ -97,16 +111,13 @@ const styles = StyleSheet.create({
   },
   container: {
     position: 'absolute',
-    top: 0,
+    top: 64,
     right: 0,
     left: 0,
-    bottom: 0,
-    flex: 1,
-    paddingTop: 64,
+    bottom: 48,
   },
   footer: {
-    height: 96,
-    paddingBottom: 48,
+    height: 48,
   },
   input: {
     flex: 1,
