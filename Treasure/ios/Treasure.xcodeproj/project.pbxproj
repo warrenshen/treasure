@@ -35,6 +35,10 @@
 		992358C51D31F04800F2B924 /* JosefinSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 992358BB1D31F04800F2B924 /* JosefinSans-SemiBoldItalic.ttf */; };
 		992358C61D31F04800F2B924 /* JosefinSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 992358BC1D31F04800F2B924 /* JosefinSans-Thin.ttf */; };
 		992358C71D31F04800F2B924 /* JosefinSans-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 992358BD1D31F04800F2B924 /* JosefinSans-ThinItalic.ttf */; };
+		552DAA951D31F953008BA7A0 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 552DAA941D31F91D008BA7A0 /* libRCTCameraRoll.a */; };
+		69A473A6284D47F19AD0AE8A /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6404F6EB254CCEA574C41B /* libRNDeviceInfo.a */; };
+		AE62D24ABAF04302B33DACF4 /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52091641C8E84336B605C6A6 /* libRCTCamera.a */; };
+		BAA8672C06A14917B4AB143E /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9E211424094CE0990DC1C8 /* libRNImagePicker.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +104,41 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		552DAA771D31EF61008BA7A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD6B2D8747A74573BFF5791C /* AirMaps.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
+			remoteInfo = AirMaps;
+		};
+		552DAA7B1D31EF61008BA7A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ED5BB3E8E7A04508A2FFD625 /* RCTCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RCTCamera;
+		};
+		552DAA871D31EF61008BA7A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2509E86EEEC4C60A1612FD3 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
+			remoteInfo = RNDeviceInfo;
+		};
+		552DAA931D31F91D008BA7A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 552DAA8F1D31F91D008BA7A0 /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
+		552DAAB61D31FE3F008BA7A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6694DACD28F34115B4F27506 /* RNImagePicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNImagePicker;
 		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -194,6 +233,9 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				1277DE113C84409DAE29544B /* libAirMaps.a in Frameworks */,
 				69A473A6284D47F19AD0AE8A /* libRNDeviceInfo.a in Frameworks */,
+				AE62D24ABAF04302B33DACF4 /* libRCTCamera.a in Frameworks */,
+				552DAA951D31F953008BA7A0 /* libRCTCameraRoll.a in Frameworks */,
+				BAA8672C06A14917B4AB143E /* libRNImagePicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +337,46 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		552DAA701D31EF60008BA7A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				552DAA881D31EF61008BA7A0 /* libRNDeviceInfo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		552DAA721D31EF60008BA7A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				552DAA781D31EF61008BA7A0 /* libAirMaps.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		552DAA741D31EF60008BA7A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				552DAA7C1D31EF61008BA7A0 /* libRCTCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		552DAA901D31F91D008BA7A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				552DAA941D31F91D008BA7A0 /* libRCTCameraRoll.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		552DAAA51D31FE3F008BA7A0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				552DAAB71D31FE3F008BA7A0 /* libRNImagePicker.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -306,6 +388,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				552DAA8F1D31F91D008BA7A0 /* RCTCameraRoll.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -318,6 +401,8 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				DD6B2D8747A74573BFF5791C /* AirMaps.xcodeproj */,
 				B2509E86EEEC4C60A1612FD3 /* RNDeviceInfo.xcodeproj */,
+				ED5BB3E8E7A04508A2FFD625 /* RCTCamera.xcodeproj */,
+				6694DACD28F34115B4F27506 /* RNImagePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -452,6 +537,14 @@
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
 				{
+					ProductGroup = 552DAA741D31EF60008BA7A0 /* Products */;
+					ProjectRef = ED5BB3E8E7A04508A2FFD625 /* RCTCamera.xcodeproj */;
+				},
+				{
+					ProductGroup = 552DAA901D31F91D008BA7A0 /* Products */;
+					ProjectRef = 552DAA8F1D31F91D008BA7A0 /* RCTCameraRoll.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -555,6 +648,41 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		552DAA781D31EF61008BA7A0 /* libAirMaps.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAirMaps.a;
+			remoteRef = 552DAA771D31EF61008BA7A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		552DAA7C1D31EF61008BA7A0 /* libRCTCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCamera.a;
+			remoteRef = 552DAA7B1D31EF61008BA7A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		552DAA881D31EF61008BA7A0 /* libRNDeviceInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDeviceInfo.a;
+			remoteRef = 552DAA871D31EF61008BA7A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		552DAA941D31F91D008BA7A0 /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = 552DAA931D31F91D008BA7A0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		552DAAB71D31FE3F008BA7A0 /* libRNImagePicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNImagePicker.a;
+			remoteRef = 552DAAB61D31FE3F008BA7A0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
@@ -689,6 +817,8 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Treasure.app/Treasure";
@@ -705,6 +835,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -724,6 +856,9 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/CameraRoll",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios/**",
 				);
 				INFOPLIST_FILE = Treasure/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -746,6 +881,9 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/CameraRoll",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios/**",
 				);
 				INFOPLIST_FILE = Treasure/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -798,6 +936,8 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -840,6 +980,8 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-maps/ios/AirMaps/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-image-picker/ios/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;

@@ -1,6 +1,8 @@
 package com.treasure;
 
 import com.facebook.react.ReactActivity;
+import com.imagepicker.ImagePickerPackage;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.airbnb.android.react.maps.MapsPackage;
 
