@@ -35,7 +35,6 @@ class MainMap extends Component {
     super(props);
     this.state = {
       isInitializing: true,
-      isPostingNote: false,
       latitude: 37.78825,
       longitude: -122.4324,
       markerCoord: {},
@@ -147,10 +146,12 @@ class MainMap extends Component {
   render() {
     const {
       isInitializing,
-      isPostingNote,
       latitude,
       longitude,
     } = this.state;
+    const {
+      isPostingNote,
+    } = this.props;
     return (
       <View style={styles.container}>
         {!isInitializing && (
@@ -159,7 +160,7 @@ class MainMap extends Component {
             loadingEnabled={true}
             mapType={'standard'}
             onRegionChangeComplete={this._onMarkerDragEnd}
-            region={{
+            initialRegion={{
               latitude: latitude,
               longitude: longitude,
               latitudeDelta: 0.01,
@@ -180,15 +181,18 @@ class MainMap extends Component {
                 }}
                 key={`pirate_marker_${latitude}_${longitude}`}
               >
-                <Image source={require('../../images/pirate-me.png')} style={styles.pirate} />
+                <Image
+                  source={require('../../images/pirate-me.png')}
+                  style={styles.pirate}
+                />
               </MapView.Marker>
             )}
-            {isPostingNote && (
-              <View style={styles.iconContainer} pointerEvents={'none'}>
-                <NewMarker />
-              </View>
-            )}
           </MapView>
+        )}
+        {isPostingNote && (
+          <View style={styles.iconContainer} pointerEvents={'none'}>
+            <NewMarker />
+          </View>
         )}
       </View>
     );
