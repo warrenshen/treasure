@@ -91,7 +91,8 @@ class GeoNotesController < ApplicationController
     end
 
     geonote.liked_by User.where(device_id: vote[:device_id]).take
-    render json: popularity(geonote)
+    geonote.reload
+    render json: geonote, device_id: vote[:device_id]
   end
 
   def downvote
@@ -103,6 +104,7 @@ class GeoNotesController < ApplicationController
     end
 
     geonote.downvote_from User.where(device_id: vote[:device_id]).take
-    render json: popularity(geonote)
+    geonote.reload
+    render json: geonote, device_id: vote[:device_id]
   end
 end
