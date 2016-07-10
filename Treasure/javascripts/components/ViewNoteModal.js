@@ -167,7 +167,7 @@ class ViewNoteModal extends Component {
     },
 
     body: {
-      fontSize: 180,
+      fontSize: 18,
       // paddingLeft: 20,
     },
 
