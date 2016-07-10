@@ -49,24 +49,55 @@ class MapPage extends Component {
     this.setState({ modalIsVisible: false });
   }
 
-  _postNoteHandler = () => {
-    const { isPostingNote } = this.state;
-    if (isPostingNote) {
-      this.setState({ modalIsVisible: true });
-    } else {
-      this.setState({ isPostingNote: !isPostingNote });
-    }
-  }
-
-  _updatePostCoord = (postCoord) => {
-    this.setState({ postCoord });
+  _updatePostCoord = (postCoord, postCoordIsValid) => {
+    this.setState({
+      postCoord,
+      postCoordIsValid,
+    });
   }
 
   // --------------------------------------------------
   // Render
   // --------------------------------------------------
   render() {
-    const { isPostingNote } = this.state;
+    const { isPostingNote, postCoordIsValid } = this.state;
+
+    let postNoteButtons;
+    if (isPostingNote) {
+      postNoteButtons = [(
+        <TouchableHighlight
+          onPress={() => this.setState({ modalIsVisible: true })}
+          style={styles.button}
+          disabled={!postCoordIsValid}
+          key={1}
+        >
+          <Text>
+            {postCoordIsValid ? 'Set Location' : 'Fuck you, user.'}
+          </Text>
+        </TouchableHighlight>
+      ), (
+        <TouchableHighlight
+          onPress={() => this.setState({ isPostingNote: false })}
+          style={styles.button}
+          key={2}
+        >
+          <Text>Cancel</Text>
+        </TouchableHighlight>
+      )]
+    } else {
+      postNoteButtons = (
+        <TouchableHighlight
+          onPress={() => this.setState({
+            isPostingNote: true,
+            postCoordIsValid: true,
+          })}
+          style={styles.button}
+        >
+          <Text>Post Note</Text>
+        </TouchableHighlight>
+      )
+    }
+
     return (
       <Navigator
         initialRoute={{ index: 0, title: 'Explore' }}
@@ -98,14 +129,7 @@ class MapPage extends Component {
               onCancel={this._handleHideModal}
               onPost={this._handlePostNote}
             />
-            <TouchableHighlight
-              onPress={this._postNoteHandler}
-              style={styles.button}
-            >
-              <Text>
-                {isPostingNote ? 'Set Location' : 'Post Note'}
-              </Text>
-            </TouchableHighlight>
+            {postNoteButtons}
           </View>
         )}
       />

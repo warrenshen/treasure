@@ -6,14 +6,21 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import Requester from '../helpers/requester';
+import Requester from '../utils/requester';
+import { meterDistance } from '../utils/geo.js';
 
 import MapView from 'react-native-maps';
+
 
 class MainMap extends Component {
   static propTypes = {
     isPostingNote: PropTypes.bool.isRequired,
     updatePostCoord: PropTypes.func.isRequired,
+    legalPostRadius: PropTypes.number.isRequired,
+  };
+
+  static defaultProps = {
+    legalPostRadius: 75, // meters
   };
 
   constructor(props) {
@@ -68,7 +75,10 @@ class MainMap extends Component {
 
   _onMarkerDragEnd = (e) => {
     const coord = e.nativeEvent.coordinate;
-    this.props.updatePostCoord(coord);
+    const { latitude, longitude } = this.state;
+    const postDistance = meterDistance({latitude, longitude}, coord);
+
+    this.props.updatePostCoord(coord, postDistance < this.props.legalPostRadius);
     this.setState({ markerCoord: coord });
   }
 
@@ -78,7 +88,7 @@ class MainMap extends Component {
       longitude,
       markerCoord,
     } = this.state;
-    const { isPostingNote } = this.props;
+    const { isPostingNote, legalPostRadius } = this.props;
     return (
       <MapView
         followsUserLocation={!isPostingNote}
@@ -92,9 +102,19 @@ class MainMap extends Component {
         }}
         showsBuildings={false}
         showsTraffic={false}
-        showsUserLocation={true}
+        showsUserLocation={!isPostingNote}
         style={styles.map}
       >
+      <MapView.Circle
+        center={{
+          latitude: latitude,
+          longitude: longitude,
+        }}
+        key={`circle_${latitude}_${longitude}`}
+        radius={legalPostRadius}
+        fillColor={'#0591FF33'}
+        strokeColor={'#66666666'}
+      />
       {isPostingNote &&
         <MapView.Marker
           draggable
