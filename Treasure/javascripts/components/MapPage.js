@@ -33,9 +33,9 @@ class MapPage extends Component {
       modalIsVisible: false,
     });
 
-    // var params = {
-    //   note_text: this.state.text,
-    // };
+    var params = {
+      note_text: this.state.text,
+    };
 
     // Requester.post(
     //   'http://localhost:3000/geo_notes',
