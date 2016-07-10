@@ -1,4 +1,4 @@
-![alt tag](https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png)
+![alt tag](https://github.com/warrenshen/treasure/blob/master/mocks/pirate-red.png = 250x250)
 
 # Treasure
 
