@@ -17,12 +17,14 @@ import NewMarker from './NewMarker.js';
 
 class MainMap extends Component {
   static propTypes = {
+    queryMarkers: PropTypes.func.isRequired,
     isPostingNote: PropTypes.bool.isRequired,
     updatePostCoord: PropTypes.func.isRequired,
     onMarkerPress: PropTypes.func.isRequired,
     legalPostRadius: PropTypes.number.isRequired,
     legalViewRadius: PropTypes.number.isRequired,
     markers: PropTypes.array.isRequired,
+    treasures: PropTypes.array.isRequired,
   };
 
   static defaultProps = {
@@ -49,10 +51,14 @@ class MainMap extends Component {
     this.watchID = navigator.geolocation.watchPosition(
       (response) => {
         const coords = response.coords;
+        if (this.state.isInitializing) {
+          this.props.queryMarkers(coords);
+        }
         this.setState({
           isInitializing: false,
           latitude: coords.latitude,
           longitude: coords.longitude,
+          markerCoord: coords,
         });
       },
       (error) => alert(error.message)
@@ -133,9 +139,9 @@ class MainMap extends Component {
             key={marker.id}
             onSelect={() => onMarkerPress(marker)}
           >
-            {markerDistance.popularity > 20 ?
-              <Image source={require('../../images/pin.png')} style={styles.pin} /> :
-              <Image source={require('../../images/pin-treasure.png')} style={styles.pin} />
+            {marker.popularity > 20 ?
+              <Image source={require('../../images/pin-treasure.png')} style={styles.pin} /> :
+              <Image source={require('../../images/pin.png')} style={styles.pin} />
             }
           </MapView.Marker>
         );
