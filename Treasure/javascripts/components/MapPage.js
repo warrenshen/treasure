@@ -64,10 +64,6 @@ class MapPage extends Component {
   }
 
   _handleShowViewNoteModal = (marker) => {
-    // Renders the View Note Modal
-    // TODO: pass in upvotes and shit
-    // TODO: Add in the city or something
-
     this.setState({
       viewNoteModalIsVisible: true,
       currentMarker: marker,
@@ -76,6 +72,18 @@ class MapPage extends Component {
 
   _handleHideViewModal = () => {
     this.setState({ viewNoteModalIsVisible: false });
+  }
+
+  _handleVote = (up) => {
+    var params = {
+      id: this.state.currentMarker.id,
+    }
+    const endpoint = up ? 'upvote' : 'downvote';
+    Requester.post(
+      `http://localhost:3000/geo_notes/${endpoint}`,
+      params,
+      (marker) => this.setState({currentMarker: marker}),
+    );
   }
 
   _handlePostNote = (navigator) => {
@@ -105,17 +113,6 @@ class MapPage extends Component {
         navigator.pop();
       }
     );
-  }
-
-  _handleUpVote = () => {
-
-    var params = {
-      id: id,
-    }
-    Requester.post(
-      'http://localhost:3000/geo_notes',
-      params,
-      )
   }
 
   _updatePostCoord = (postCoord, coordIsValid) => {
@@ -210,6 +207,7 @@ class MapPage extends Component {
                 <ViewNoteModal
                   isVisible={viewNoteModalIsVisible}
                   onCancel={this._handleHideViewModal}
+                  handleVote={this._handleVote}
                   marker={currentMarker}
                 />
                 {isPostingNote &&
