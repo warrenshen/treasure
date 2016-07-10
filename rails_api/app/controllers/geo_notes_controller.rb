@@ -36,7 +36,7 @@ class GeoNotesController < ApplicationController
 
   # The maximum visible treasure radius
   def max_radius
-    2000
+    4000
   end
 
   def popularity(geonote)
