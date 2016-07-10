@@ -14,15 +14,55 @@ import {
   ScrollView,
 } from 'react-native';
 
+import Requester from '../utils/requester';
+
 class ViewNoteModal extends Component {
 
   // --------------------------------------------------
-  // Props
+  // Props and State
   // --------------------------------------------------
   static propTypes: {
     marker: PropTypes.object,
     onCancel: PropTypes.func.isRequired,
     isVisible: PropTypes.bool.isRequired,
+    noteId: PropTypes.number,
+  };
+
+  static defaultProps = {
+    noteId: 1,
+  };
+
+ constructor(props) {
+    super(props);
+    this.state = {
+      upVoted: false,
+      downVoted: false,
+    };
+  }
+
+  // --------------------------------------------------
+  // Handlers
+  // --------------------------------------------------
+  _handleUpVote = () => {
+    var params = {
+      id: this.props.noteId,
+    }
+    Requester.post(
+      'http://localhost:3000/geo_notes/upvote',
+      params,
+      ()=>{this.setState({upVoted: true})},
+    );
+  }
+
+  _handleDownVote = () => {
+    var params = {
+      id: this.props.noteId,
+    }
+    Requester.post(
+      'http://localhost:3000/geo_notes/downvote',
+      params,
+      ()=>{this.setState({downVoted: true})},
+    );
   }
 
   // --------------------------------------------------
@@ -31,6 +71,34 @@ class ViewNoteModal extends Component {
   // Messy cause onclick outside of modal should close it
   // TODO: Scrollview to actually work
   // TODO: Blur background
+  componentWillMount() {
+    var params = {
+      id: this.props.noteId,
+    }
+    console.log(params);
+
+    // Set the initial state here:
+    Requester.get(
+      'http://localhost:3000/geo_notes/upvoted',
+      params,
+      () => {},
+    );
+    Requester.get(
+      'http://localhost:3000/geo_notes/downvoted',
+      params,
+      () => {},
+    );
+  }
+
+  _onCancel = () => {
+    this.props.onCancel();
+    this.setState({
+      downVoted: false,
+      upVoted: false,
+    });
+  }
+
+
   render() {
     const {
       marker,
@@ -53,9 +121,9 @@ class ViewNoteModal extends Component {
         animationType={"slide"}
         transparent={true}
         visible={isVisible}
-        onRequestClose={onCancel}>
+        onRequestClose={this._onCancel}>
         <TouchableWithoutFeedback
-          onPress={onCancel}>
+          onPress={this._onCancel}>
           <View style={styles.container}>
             <TouchableWithoutFeedback>
               <View style={styles.modal}>
@@ -67,7 +135,7 @@ class ViewNoteModal extends Component {
                   </View>
                   <View style={styles.action}>
                     <TouchableWithoutFeedback
-                      onPress={onCancel}
+                      onPress={this._onCancel}
                       style={styles.button}>
                         <Image
                           source={require('../../images/x.png')}
@@ -97,13 +165,17 @@ class ViewNoteModal extends Component {
                     </Text>
                     <View style={styles.arrows}>
                       <TouchableWithoutFeedback
-                        onPress={onCancel}
+                        onPress={this._handleUpVote}
                         style={styles.button}>
-                        <Image
+                        {this.state.upVoted == true ?
+                          <Image
+                          source={require('../../images/up-red.png')}
+                          style={styles.arrow}/>
+                          :
+                          <Image
                           source={require('../../images/up.png')}
-                          style={styles.arrow}
-                          onPress={onCancel}
-                      />
+                          style={styles.arrow}/>
+                        }
                     </TouchableWithoutFeedback>
                       <Text style={styles.upvoteCount}>
                         {popularity}
@@ -111,10 +183,16 @@ class ViewNoteModal extends Component {
                       <TouchableWithoutFeedback
                         onPress={onCancel}
                         style={styles.button}>
-                        <Image
+
+                        {this.state.downVoted == true ?
+                          <Image
+                          source={require('../../images/down-red.png')}
+                          style={styles.arrow}/>
+                          :
+                          <Image
                           source={require('../../images/down.png')}
-                          style={styles.arrow}
-                        />
+                          style={styles.arrow}/>
+                        }
                     </TouchableWithoutFeedback>
                     </View>
                   </View>

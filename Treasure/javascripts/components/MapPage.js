@@ -108,17 +108,6 @@ class MapPage extends Component {
     );
   }
 
-  _handleUpVote = () => {
-
-    var params = {
-      id: id,
-    }
-    Requester.post(
-      'http://localhost:3000/geo_notes',
-      params,
-      )
-  }
-
   _updatePostCoord = (postCoord, coordIsValid) => {
     this.setState({
       postCoord,

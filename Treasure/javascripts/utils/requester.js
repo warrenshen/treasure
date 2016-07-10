@@ -33,6 +33,7 @@ export default {
         reject && reject(json);
         return undefined;
       } else {
+        console.log(json);
         return json;
       }
     })

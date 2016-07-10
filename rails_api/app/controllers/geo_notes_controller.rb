@@ -99,4 +99,20 @@ class GeoNotesController < ApplicationController
     geonote.downvote_from User.where(device_id: vote[:device_id]).take
     render json: popularity(geonote)
   end
+
+  def upvoted
+    vote = params.permit(:id, :device_id)
+    geonote = GeoNote.find(vote[:id])
+    user = User.where(device_id: vote[:device_id]).take
+    boolean = user.voted_up_on? geonote
+    render json: boolean
+  end
+
+  def downvoted
+    vote = params.permit(:id, :device_id)
+    geonote = GeoNote.find(vote[:id])
+    user = User.where(device_id: vote[:device_id]).take
+    boolean = user.voted_down_on? geonote
+    render json: boolean
+  end
 end
