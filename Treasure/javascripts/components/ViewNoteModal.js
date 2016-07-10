@@ -44,18 +44,6 @@ class ViewNoteModal extends Component {
   // --------------------------------------------------
   // Handlers
   // --------------------------------------------------
-
-  _handleDownVote = () => {
-    var params = {
-      id: this.props.noteId,
-    }
-    Requester.post(
-      'http://localhost:3000/geo_notes/downvote',
-      params,
-      ()=>{this.setState({downVoted: true})},
-    );
-  }
-
   _onCancel = () => {
     this.props.onCancel();
     this.setState({

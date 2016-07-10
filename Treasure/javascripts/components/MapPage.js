@@ -64,11 +64,6 @@ class MapPage extends Component {
   }
 
   _handleShowViewNoteModal = (marker) => {
-    // Renders the View Note Modal
-    // TODO: pass in upvotes and shit
-    // TODO: Add in the city or something
-    const {note_text, id, popularity} = marker;
-
     this.setState({
       viewNoteModalIsVisible: true,
       currentMarker: marker,
