@@ -47,6 +47,7 @@ class Treasure extends Component {
           <TabBarIOS.Item
             onPress={() => this.setState({ selectedTab: 'home' })}
             icon={require('./images/home.png')}
+            iconSize={30}
             selected={this.state.selectedTab === 'home'}
             selectedIcon={require('./images/home-selected.png')}
             title={'Map'}

@@ -4,17 +4,16 @@ import update from 'react-addons-update';
 
 // UI
 import {
-  Image,
   Navigator,
   StyleSheet,
   Text,
-  TouchableHighlight,
   View,
 } from 'react-native';
 
 import Requester from '../utils/requester';
-import CreateNoteModal from '../components/CreateNoteModal';
-import MainMap from '../components/MainMap';
+import CreateNoteModal from './CreateNoteModal';
+import MainMap from './MainMap';
+import NavbarButton from './NavbarButton'
 
 const mapRoutes = [
   { index: 0, title: 'Treasure' },
@@ -106,50 +105,29 @@ class MapPage extends Component {
           <Navigator.NavigationBar
             routeMapper={{
               LeftButton: (route, navigator, index, navState) => {
-                if (isPostingNote) {
-                  return (
-                    <TouchableHighlight
-                      onPress={() => this.setState({ isPostingNote: false })}
-                      style={styles.button}
-                    >
-                      <Text>Cancel</Text>
-                    </TouchableHighlight>
-                  );
-                }
+                return isPostingNote && (
+                  <NavbarButton
+                    textContent={'Cancel'}
+                    onPress={() => this.setState({ isPostingNote: false })}
+                  />
+                );
               },
               RightButton: (route, navigator, index, navState) => {
-                let postNoteButtons;
-                if (isPostingNote) {
-                  postNoteButtons = (
-                    <TouchableHighlight
-                      disabled={!coordIsValid}
-                      onPress={() => navigator.push(mapRoutes[1])}
-                      style={styles.button}
-                    >
-                      <Text>
-                        {coordIsValid ? 'Set Location' : 'Fuck you, user.'}
-                      </Text>
-                    </TouchableHighlight>
-                  );
-                } else {
-                  postNoteButtons = (
-                    <TouchableHighlight
-                      onPress={() => {this.setState({
-                        coordIsValid: true,
-                        isPostingNote: true,
-                      });}}
-                      style={styles.button}
-                    >
-                      <Image
-                        source={require('../../images/write.png')}
-                        style={styles.image}
-                      />
-                    </TouchableHighlight>
-                  );
-                }
-                return (
-                  <View>{postNoteButtons}</View>
-                )
+                return isPostingNote ? (
+                  <NavbarButton
+                    disabled={!coordIsValid}
+                    imageSource={require('../../images/write.png')}
+                    onPress={() => navigator.push(mapRoutes[1])}
+                  />
+                ) : (
+                  <NavbarButton
+                    imageSource={require('../../images/write.png')}
+                    onPress={() => this.setState({
+                      coordIsValid: true,
+                      isPostingNote: true,
+                    })}
+                  />
+                );
               },
               Title: (route, navigator, index, navState) => (
                 <Text style={styles.text}>{route.title}</Text>
@@ -191,15 +169,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 64,
   },
-  button: {
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    backgroundColor: 'transparent',
-  },
-  image: {
-    width: 30,
-    height: 30,
-  },
   navbar: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -213,7 +182,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   text: {
-    paddingTop: 8,
+    paddingTop: 10,
     color: 'white',
     fontFamily: 'JosefinSans-Bold',
     fontSize: 24,
