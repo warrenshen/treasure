@@ -10,6 +10,8 @@ import {
   Modal,
   TouchableHighlight,
   TouchableWithoutFeedback,
+  Image,
+  ScrollView,
 } from 'react-native';
 
 class ViewNoteModal extends Component {
@@ -54,36 +56,49 @@ class ViewNoteModal extends Component {
               <View style={styles.modal}>
                 <View style={styles.header}>
                   <View style={styles.title}>
-                    <Text styles={styles.titleText}>
+                    <Text style={styles.titleText}>
                       {"Title"}
                     </Text>
                   </View>
                   <View style={styles.action}>
-                    <TouchableHighlight
+                    <TouchableWithoutFeedback
                       onPress={onCancel}
                       style={styles.button}>
-                        <Text style={styles.actionText}>X</Text>
-                    </TouchableHighlight>
+                        <Image
+                          source={require('../../images/x.png')}
+                          style={styles.cancel}
+                        />
+                    </TouchableWithoutFeedback>
                   </View>
                 </View>
-                <View style={styles.textInputContainer}>
-                  <Text style={styles.textInput}>
-                    {bodyText}
-                  </Text>
-                </View>
-                <View style={styles.footer}>
-                  <Text style={styles.city}>
-                    {"Berkeley, California"}
-                  </Text>
-                  <View style={styles.arrows}>
-                    <Text style={styles.upArrow}>
-                      {"^"}
-                    </Text>
-                    <Text style={styles.downArrow}>
-                      {"v"}
+                <ScrollView
+                  contentContainerStyle={styles.scrollView}
+                  keyboardDismissMode={'on-drag'}
+                  scrollEnabled={true}>
+                  <View style={styles.bodyContainer}>
+                    <Text style={styles.body}>
+                      {bodyText}
                     </Text>
                   </View>
-                </View>
+                  <View style={styles.footer}>
+                    <Text style={styles.city}>
+                      {"Berkeley, California"}
+                    </Text>
+                    <View style={styles.arrows}>
+                      <Image
+                        source={require('../../images/up.png')}
+                        style={styles.arrow}
+                      />
+                      <Text style={styles.upvoteCount}>
+                        {"3"}
+                      </Text>
+                      <Image
+                        source={require('../../images/down.png')}
+                        style={styles.arrow}
+                      />
+                    </View>
+                  </View>
+                </ScrollView>
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -104,15 +119,62 @@ class ViewNoteModal extends Component {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    scrollView: {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      left: 0,
+      bottom: 0,
+      flex: 1,
+    },
     modal: {
       backgroundColor: 'white',
-      height: 500,
-      width: 300,
+      paddingRight: 20,
+      paddingBottom: 5,
+      paddingLeft: 20,
+      paddingTop: 20,
+      height: 520,
+      width: 340,
+    },
+
+    cancel: {
+      width: 30,
+      height: 30,
     },
 
     button: {
       marginRight: 5,
       marginLeft: 5,
+    },
+
+    titleText: {
+      fontFamily: 'JosefinSans-Bold',
+      fontSize: 20,
+    },
+
+    arrows: {
+      alignItems: 'center',
+    },
+
+    arrow: {
+      width: 30,
+      height: 30,
+    },
+
+    upvoteCount: {
+      color: '#999999',
+      fontSize: 15,
+    },
+
+    body: {
+      fontSize: 18,
+      // paddingLeft: 20,
+    },
+
+    city: {
+      color: '#CCCCCC',
+      fontSize: 18,
+      paddingBottom: 20,
     },
 
     footer: {
@@ -125,9 +187,6 @@ class ViewNoteModal extends Component {
     header: {
       paddingTop: 10,
       paddingBottom: 10,
-      paddingLeft: 10,
-      paddingRight: 10,
-      backgroundColor: 'brown',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',

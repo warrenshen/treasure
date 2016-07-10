@@ -4,9 +4,10 @@ import React, { Component } from 'react';
 // UI
 import {
   Image,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   StyleSheet,
   Text,
+  View,
 } from 'react-native';
 
 class NavbarButton extends Component {
@@ -18,21 +19,22 @@ class NavbarButton extends Component {
       textContent,
     } = this.props;
     return (
-      <TouchableHighlight
+      <TouchableWithoutFeedback
         disabled={disabled}
         onPress={onPress}
         style={styles.container}
-        underlayColor={'#CCCCCC50'}
-      >
-        {imageSource ? (
-          <Image
-            source={imageSource}
-            style={styles.image}
-          />
-        ) : (
-          <Text style={styles.text}>{textContent}</Text>
-        )}
-      </TouchableHighlight>
+        underlayColor={'#CCCCCC50'}>
+        <View style={styles.navbarButton}>
+          {imageSource ? (
+            <Image
+              source={imageSource}
+              style={styles.image}
+            />
+          ) : (
+            <Text style={styles.text}>{textContent}</Text>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -41,10 +43,10 @@ class NavbarButton extends Component {
 // Styles
 // --------------------------------------------------
 const styles = StyleSheet.create({
-  container: {
+  navbarButton: {
     paddingVertical: 4,
     paddingHorizontal: 4,
-    marginHorizontal: 6,
+    marginHorizontal: 8,
     backgroundColor: 'transparent',
   },
   image: {
